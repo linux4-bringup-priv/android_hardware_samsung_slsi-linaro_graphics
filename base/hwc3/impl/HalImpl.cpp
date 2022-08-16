@@ -439,6 +439,11 @@ int32_t HalImpl::getHdrCapabilities(int64_t display, HdrCapabilities* caps) {
     return HWC2_ERROR_NONE;
 }
 
+int32_t HalImpl::getOverlaySupport([[maybe_unused]] OverlayProperties* caps) {
+    // TODO(b/245570131): implement
+    return HWC2_ERROR_UNSUPPORTED;
+}
+
 int32_t HalImpl::getMaxVirtualDisplayCount(int32_t* count) {
     uint32_t hwcCount = mDevice->getMaxVirtualDisplayCount();
     h2a::translate(hwcCount, *count);

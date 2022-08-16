@@ -52,6 +52,7 @@
 #include <aidl/android/hardware/graphics/composer3/FormatColorComponent.h>
 #include <aidl/android/hardware/graphics/composer3/HdrCapabilities.h>
 #include <aidl/android/hardware/graphics/composer3/LayerCommand.h>
+#include <aidl/android/hardware/graphics/composer3/OverlayProperties.h>
 #include <aidl/android/hardware/graphics/composer3/ParcelableBlendMode.h>
 #include <aidl/android/hardware/graphics/composer3/ParcelableComposition.h>
 #include <aidl/android/hardware/graphics/composer3/ParcelableDataspace.h>
@@ -131,6 +132,7 @@ class IComposerHal {
                                                   common::Transform* orientation) = 0;
     virtual int32_t getDozeSupport(int64_t display, bool* support) = 0;
     virtual int32_t getHdrCapabilities(int64_t display, HdrCapabilities* caps) = 0;
+    virtual int32_t getOverlaySupport(OverlayProperties* caps) = 0;
     virtual int32_t getMaxVirtualDisplayCount(int32_t* count) = 0;
     virtual int32_t getPerFrameMetadataKeys(int64_t display,
                                             std::vector<PerFrameMetadataKey>* keys) = 0;

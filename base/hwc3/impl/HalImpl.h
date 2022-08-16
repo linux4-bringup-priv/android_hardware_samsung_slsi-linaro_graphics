@@ -70,6 +70,7 @@ class HalImpl : public IComposerHal {
     int32_t getDisplayPhysicalOrientation(int64_t display, common::Transform* orientation) override;
     int32_t getDozeSupport(int64_t display, bool* support) override;
     int32_t getHdrCapabilities(int64_t display, HdrCapabilities* caps) override;
+    int32_t getOverlaySupport(OverlayProperties* caps) override;
     int32_t getMaxVirtualDisplayCount(int32_t* count) override;
     int32_t getPerFrameMetadataKeys(int64_t display,
                                     std::vector<PerFrameMetadataKey>* keys) override;

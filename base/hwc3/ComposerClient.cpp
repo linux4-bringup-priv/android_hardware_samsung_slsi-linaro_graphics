@@ -235,6 +235,12 @@ ndk::ScopedAStatus ComposerClient::getHdrCapabilities(int64_t display, HdrCapabi
     return TO_BINDER_STATUS(err);
 }
 
+ndk::ScopedAStatus ComposerClient::getOverlaySupport(OverlayProperties* caps) {
+    DEBUG_FUNC();
+    auto err = mHal->getOverlaySupport(caps);
+    return TO_BINDER_STATUS(err);
+}
+
 ndk::ScopedAStatus ComposerClient::getMaxVirtualDisplayCount(int32_t* count) {
     DEBUG_FUNC();
     auto err = mHal->getMaxVirtualDisplayCount(count);
