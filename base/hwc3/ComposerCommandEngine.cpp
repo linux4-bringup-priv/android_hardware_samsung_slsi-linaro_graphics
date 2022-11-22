@@ -53,9 +53,9 @@ namespace aidl::android::hardware::graphics::composer3::impl {
         }                                                                         \
     } while (0)
 
-bool ComposerCommandEngine::init() {
+int32_t ComposerCommandEngine::init() {
     mWriter = std::make_unique<ComposerServiceWriter>();
-    return (mWriter != nullptr);
+    return (mWriter != nullptr) ? ::android::NO_ERROR : ::android::NO_MEMORY;
 }
 
 int32_t ComposerCommandEngine::execute(const std::vector<DisplayCommand>& commands,
