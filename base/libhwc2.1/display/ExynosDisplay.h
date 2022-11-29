@@ -259,6 +259,8 @@ struct DisplayControl {
     bool readbackSupport = false;
     bool skipStaticLayers = true;
     bool skipM2mProcessing = true;
+    /** Enable multi-thread present **/
+    bool multiThreadedPresent = false;
 };
 
 typedef struct hiberState {
@@ -1199,6 +1201,8 @@ class ExynosDisplay : public ExynosVsyncHandler {
 
     hdrInterface *createHdrInterfaceInstance();
     hdr10pMetaInterface *createHdr10PMetaInterfaceInstance();
+
+    virtual int32_t getDisplayMultiThreadedPresentSupport(bool& outSupport);
 
 #ifdef USE_DQE_INTERFACE
     bool needDqeSetting();

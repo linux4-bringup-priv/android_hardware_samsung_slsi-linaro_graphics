@@ -268,6 +268,17 @@ int ExynosHWCService::getCPUPerfInfo(int display, int config, int32_t *cpuIDs, i
     return mExynosDevice->getCPUPerfInfo(display, config, cpuIDs, min_clock);
 }
 
+int32_t ExynosHWCService::setDisplayMultiThreadedPresent(const int32_t& displayId,
+                                                         const bool& enable) {
+    auto display = mHWCCtx->device->getDisplay(displayId);
+
+    if (display == nullptr) return -EINVAL;
+
+    display->mDisplayControl.multiThreadedPresent = enable;
+    ALOGD("ExynosHWCService::%s() display(%u) enable=%d", __func__, displayId, enable);
+    return NO_ERROR;
+}
+
 int ExynosHWCService::createServiceLocked() {
     ALOGD_IF(HWC_SERVICE_DEBUG, "%s::", __func__);
     sp<IServiceManager> sm = defaultServiceManager();
@@ -439,6 +450,14 @@ status_t ExynosHWCService::onTransact(
         CHECK_INTERFACE(IExynosHWCService, data, reply);
         int res = printMppsAttr();
         reply->writeInt32(res);
+        return NO_ERROR;
+    } break;
+    case SET_DISPLAY_MULTI_THREADED_PRESENT: {
+        CHECK_INTERFACE(IExynosHWCService, data, reply);
+        int32_t displayId = data.readInt32();
+        bool enable = data.readBool();
+        int32_t error = setDisplayMultiThreadedPresent(displayId, enable);
+        reply->writeInt32(error);
         return NO_ERROR;
     } break;
     default:

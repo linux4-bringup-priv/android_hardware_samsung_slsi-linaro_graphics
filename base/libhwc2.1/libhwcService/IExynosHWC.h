@@ -56,6 +56,8 @@ enum {
 
     GET_CPU_PERF_INFO = 109,
     SET_INTERFACE_DEBUG = 110,
+
+    SET_DISPLAY_MULTI_THREADED_PRESENT = 1010,
 };
 
 class IExynosHWCService : public IInterface {
@@ -80,6 +82,8 @@ class IExynosHWCService : public IInterface {
     /*
     virtual void notifyPSRExit() = 0;
     */
+    virtual int32_t setDisplayMultiThreadedPresent(const int32_t& displayId,
+                                                   const bool& enable) = 0;
 };
 
 /* Native Interface */

@@ -168,6 +168,17 @@ ndk::ScopedAStatus ComposerClient::getDisplayCapabilities(int64_t display,
     if (err == 0 && support) {
         caps->push_back(DisplayCapability::DOZE);
     }
+
+    err = mHal->getDisplayMultiThreadedPresentSupport(display, support);
+    if (err != ::android::OK) {
+        LOG(ERROR) << "failed to getDisplayMultiThreadedPresentSupport: " << err;
+        return TO_BINDER_STATUS(err);
+    }
+
+    if (support) {
+        caps->push_back(DisplayCapability::MULTI_THREADED_PRESENT);
+    }
+
     return TO_BINDER_STATUS(err);
 }
 

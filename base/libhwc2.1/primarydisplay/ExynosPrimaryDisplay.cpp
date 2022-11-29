@@ -74,6 +74,8 @@ ExynosPrimaryDisplay::ExynosPrimaryDisplay(DisplayIdentifier node)
         ALOGE("Brightness node is not opened");
     }
 #endif
+
+    mDisplayControl.multiThreadedPresent = true;
 }
 
 int32_t ExynosPrimaryDisplay::setBootDisplayConfig(int32_t config) {

@@ -134,6 +134,8 @@ class HalImpl : public IComposerHal {
     int32_t setReadbackBuffer(int64_t display, buffer_handle_t buffer,
                               const ndk::ScopedFileDescriptor& releaseFence) override;
     int32_t setVsyncEnabled(int64_t display, bool enabled) override;
+    int32_t getDisplayMultiThreadedPresentSupport(const int64_t& display,
+                                                  bool& outSupport) override;
     int32_t setIdleTimerEnabled(int64_t display, int32_t timeout) override;
     int32_t validateDisplay(int64_t display, std::vector<int64_t>* outChangedLayers,
                             std::vector<Composition>* outCompositionTypes,

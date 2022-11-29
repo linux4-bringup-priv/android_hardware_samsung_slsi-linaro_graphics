@@ -48,6 +48,8 @@ class ExynosHWCService
     virtual void setBootFinished(void);
     virtual uint32_t getHWCDebug();
     virtual int getCPUPerfInfo(int display, int config, int32_t *cpuIDs, int32_t *min_clock);
+    virtual int32_t setDisplayMultiThreadedPresent(const int32_t& display_id,
+                                                   const bool& enable) override;
 
     void enableMPP(uint32_t physicalType, uint32_t physicalIndex, uint32_t logicalIndex, uint32_t enable);
     /* Below functions are used only with vndservice call */

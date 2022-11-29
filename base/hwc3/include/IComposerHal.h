@@ -117,6 +117,8 @@ class IComposerHal {
     virtual int32_t getDisplayAttribute(int64_t display, int32_t config,
                                       DisplayAttribute attribute, int32_t* outValue) = 0;
     virtual int32_t getDisplayBrightnessSupport(int64_t display, bool* outSupport) = 0;
+    virtual int32_t getDisplayMultiThreadedPresentSupport(const int64_t& display,
+                                                          bool& outSupport) = 0;
     virtual int32_t getDisplayCapabilities(int64_t display,
                                            std::vector<DisplayCapability>* caps) = 0;
     virtual int32_t getDisplayConfigs(int64_t display, std::vector<int32_t>* configs) = 0;
