@@ -338,6 +338,20 @@ ndk::ScopedAStatus ComposerClient::getPreferredBootDisplayConfig(int64_t display
     return TO_BINDER_STATUS(err);
 }
 
+ndk::ScopedAStatus ComposerClient::getHdrConversionCapabilities(
+        std::vector<common::HdrConversionCapability>* hdrConversionCapabilities) {
+    DEBUG_FUNC();
+    auto err = mHal->getHdrConversionCapabilities(hdrConversionCapabilities);
+    return TO_BINDER_STATUS(err);
+}
+
+ndk::ScopedAStatus ComposerClient::setHdrConversionStrategy(
+        const common::HdrConversionStrategy& hdrConversionStrategy) {
+    DEBUG_FUNC();
+    auto err = mHal->setHdrConversionStrategy(hdrConversionStrategy);
+    return TO_BINDER_STATUS(err);
+}
+
 ndk::ScopedAStatus ComposerClient::setAutoLowLatencyMode(int64_t display, bool on) {
     DEBUG_DISPLAY_FUNC(display);
     auto err = mHal->setAutoLowLatencyMode(display, on);

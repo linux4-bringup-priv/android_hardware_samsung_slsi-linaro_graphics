@@ -602,6 +602,14 @@ int32_t HalImpl::getPreferredBootDisplayConfig(int64_t display, int32_t* config)
     return halDisplay->getPreferredBootDisplayConfig(config);
 }
 
+int32_t HalImpl::getHdrConversionCapabilities(std::vector<common::HdrConversionCapability>*) {
+    return HWC2_ERROR_UNSUPPORTED;
+}
+
+int32_t HalImpl::setHdrConversionStrategy(const common::HdrConversionStrategy&) {
+    return HWC2_ERROR_UNSUPPORTED;
+}
+
 int32_t HalImpl::setAutoLowLatencyMode(int64_t display, bool on) {
     ExynosDisplay* halDisplay;
     RET_IF_ERR(getHalDisplay(display, halDisplay));

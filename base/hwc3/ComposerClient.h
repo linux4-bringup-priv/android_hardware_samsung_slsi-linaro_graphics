@@ -113,6 +113,9 @@ public:
     ndk::ScopedAStatus setBootDisplayConfig(int64_t display, int32_t config) override;
     ndk::ScopedAStatus clearBootDisplayConfig(int64_t display) override;
     ndk::ScopedAStatus getPreferredBootDisplayConfig(int64_t display, int32_t* config) override;
+    ndk::ScopedAStatus getHdrConversionCapabilities(
+            std::vector<common::HdrConversionCapability>*) override;
+    ndk::ScopedAStatus setHdrConversionStrategy(const common::HdrConversionStrategy&) override;
     ndk::ScopedAStatus setAutoLowLatencyMode(int64_t display, bool on) override;
     ndk::ScopedAStatus setClientTargetSlotCount(int64_t display, int32_t count) override;
     ndk::ScopedAStatus setColorMode(int64_t display, ColorMode mode, RenderIntent intent) override;
