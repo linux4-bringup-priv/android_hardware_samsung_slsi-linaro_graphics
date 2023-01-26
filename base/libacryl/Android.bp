@@ -63,7 +63,7 @@ cc_library_headers {
 cc_library_shared {
     name: "libacryl",
 
-    cflags: ["-DLOG_TAG=\"libacryl\""],
+    cflags: ["-DLOG_TAG=\"hwc-libacryl\""],
     //cflags: ["-DLIBACRYL_DEBUG"],
 
     defaults: ["libacryl_defaults",],

@@ -28,7 +28,7 @@ LOCAL_PROPRIETARY_MODULE := true
 
 LOCAL_CFLAGS += \
 	-DSOC_VERSION=$(soc_ver) \
-	-DLOG_TAG=\"hwc3\"
+	-DLOG_TAG=\"hwc-3\"
 
 # hwc3 re-uses hwc2.2 ComposerResource and libexynosdisplay
 LOCAL_SHARED_LIBRARIES := \

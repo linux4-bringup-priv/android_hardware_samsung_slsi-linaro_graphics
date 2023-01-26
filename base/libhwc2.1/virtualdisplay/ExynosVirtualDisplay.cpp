@@ -15,7 +15,7 @@
  */
 
 #undef LOG_TAG
-#define LOG_TAG "virtualdisplay"
+#define LOG_TAG "hwc-virt-display"
 #include "ExynosVirtualDisplay.h"
 #include "ExynosLayer.h"
 
