@@ -47,6 +47,7 @@ public:
                                           const VsyncPeriodChangeTimeline& timeline) override;
           void onVsyncIdle(int64_t display) override;
           void onSeamlessPossible(int64_t display) override;
+          void onRefreshRateChangedDebug(const RefreshRateChangedDebugData& data) override;
 
       private:
         void cleanDisplayResources(int64_t display);
@@ -129,6 +130,8 @@ public:
                                          const ndk::ScopedFileDescriptor& releaseFence) override;
     ndk::ScopedAStatus setVsyncEnabled(int64_t display, bool enabled) override;
     ndk::ScopedAStatus setIdleTimerEnabled(int64_t display, int32_t timeout) override;
+    ndk::ScopedAStatus setRefreshRateChangedCallbackDebugEnabled(int64_t /* display */,
+                                                                 bool /* enabled */) override;
 
 protected:
     ::ndk::SpAIBinder createBinder() override;

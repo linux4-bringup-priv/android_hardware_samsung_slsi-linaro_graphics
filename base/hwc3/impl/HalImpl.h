@@ -150,6 +150,8 @@ class HalImpl : public IComposerHal {
             const std::optional<ClockMonotonicTimestamp> expectedPresentTime) override;
 
     EventCallback* getEventCallback() { return mEventCallback; }
+    int32_t setRefreshRateChangedCallbackDebugEnabled(int64_t /* display */,
+                                                      bool /* enabled */) override;
 
 private:
     void initCaps();

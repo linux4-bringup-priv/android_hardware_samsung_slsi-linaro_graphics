@@ -419,6 +419,17 @@ ndk::ScopedAStatus ComposerClient::setIdleTimerEnabled(int64_t display, int32_t 
     return TO_BINDER_STATUS(err);
 }
 
+ndk::ScopedAStatus ComposerClient::setRefreshRateChangedCallbackDebugEnabled(int64_t /* display */,
+                                                                             bool /* enabled */) {
+    // TODO(b/267825022) Add implementation for the HAL and pass appropriate binder status
+    return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
+}
+
+void ComposerClient::HalEventCallback::onRefreshRateChangedDebug(
+        const RefreshRateChangedDebugData&) {
+    // TODO(b/267825022) Add implementation for the HAL
+}
+
 void ComposerClient::HalEventCallback::onHotplug(int64_t display, bool connected) {
     DEBUG_DISPLAY_FUNC(display);
     if (connected) {

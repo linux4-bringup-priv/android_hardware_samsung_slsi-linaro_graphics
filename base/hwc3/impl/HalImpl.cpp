@@ -991,4 +991,10 @@ int32_t HalImpl::getDisplayMultiThreadedPresentSupport(const int64_t& display, b
     return halDisplay->getDisplayMultiThreadedPresentSupport(outSupport);
 }
 
+int32_t HalImpl::setRefreshRateChangedCallbackDebugEnabled(int64_t /* display*/,
+                                                           bool /* enabled */) {
+    // TODO(b/267825022) Add implementation for the HAL
+    return EX_UNSUPPORTED_OPERATION;
+}
+
 } // namespace aidl::android::hardware::graphics::composer3::impl
