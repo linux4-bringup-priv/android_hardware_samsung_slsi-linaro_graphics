@@ -25,6 +25,7 @@
 #include <aidl/android/hardware/graphics/common/ColorTransform.h>
 #include <aidl/android/hardware/graphics/common/Dataspace.h>
 #include <aidl/android/hardware/graphics/common/FRect.h>
+#include <aidl/android/hardware/graphics/common/Hdr.h>
 #include <aidl/android/hardware/graphics/common/HdrConversionCapability.h>
 #include <aidl/android/hardware/graphics/common/HdrConversionStrategy.h>
 #include <aidl/android/hardware/graphics/common/PixelFormat.h>
@@ -159,7 +160,8 @@ class IComposerHal {
     virtual int32_t clearBootDisplayConfig(int64_t display) = 0;
     virtual int32_t getPreferredBootDisplayConfig(int64_t display, int32_t* config) = 0;
     virtual int32_t getHdrConversionCapabilities(std::vector<common::HdrConversionCapability>*) = 0;
-    virtual int32_t setHdrConversionStrategy(const common::HdrConversionStrategy&) = 0;
+    virtual int32_t setHdrConversionStrategy(const common::HdrConversionStrategy&,
+                                             common::Hdr*) = 0;
     virtual int32_t setAutoLowLatencyMode(int64_t display, bool on) = 0;
     virtual int32_t setClientTarget(int64_t display, buffer_handle_t target,
                                     const ndk::ScopedFileDescriptor& fence,

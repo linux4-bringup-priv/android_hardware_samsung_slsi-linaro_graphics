@@ -606,7 +606,7 @@ int32_t HalImpl::getHdrConversionCapabilities(std::vector<common::HdrConversionC
     return HWC2_ERROR_UNSUPPORTED;
 }
 
-int32_t HalImpl::setHdrConversionStrategy(const common::HdrConversionStrategy&) {
+int32_t HalImpl::setHdrConversionStrategy(const common::HdrConversionStrategy&, common::Hdr*) {
     return HWC2_ERROR_UNSUPPORTED;
 }
 

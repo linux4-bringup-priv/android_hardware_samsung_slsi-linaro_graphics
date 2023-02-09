@@ -346,9 +346,10 @@ ndk::ScopedAStatus ComposerClient::getHdrConversionCapabilities(
 }
 
 ndk::ScopedAStatus ComposerClient::setHdrConversionStrategy(
-        const common::HdrConversionStrategy& hdrConversionStrategy) {
+        const common::HdrConversionStrategy& hdrConversionStrategy,
+        common::Hdr* preferredHdrOutputType) {
     DEBUG_FUNC();
-    auto err = mHal->setHdrConversionStrategy(hdrConversionStrategy);
+    auto err = mHal->setHdrConversionStrategy(hdrConversionStrategy, preferredHdrOutputType);
     return TO_BINDER_STATUS(err);
 }
 
