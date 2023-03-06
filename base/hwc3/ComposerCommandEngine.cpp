@@ -206,16 +206,12 @@ void ComposerCommandEngine::executeSetDisplayBrightness(uint64_t display,
 void ComposerCommandEngine::executePresentOrValidateDisplay(
         int64_t display, const std::optional<ClockMonotonicTimestamp> expectedPresentTime) {
     executeSetExpectedPresentTimeInternal(display, expectedPresentTime);
-
-    int err;
     // First try to Present as is.
-    if (mHal->hasCapability(Capability::SKIP_VALIDATE)) {
-        err = mResources->mustValidateDisplay(display) ? IComposerClient::EX_NOT_VALIDATED
-                                                       : executePresentDisplay(display);
-        if (!err) {
-            mWriter->setPresentOrValidateResult(display, PresentOrValidate::Result::Presented);
-            return;
-        }
+    auto err = mResources->mustValidateDisplay(display) ? IComposerClient::EX_NOT_VALIDATED
+                                                        : executePresentDisplay(display);
+    if (!err) {
+        mWriter->setPresentOrValidateResult(display, PresentOrValidate::Result::Presented);
+        return;
     }
 
     // Fallback to validate
