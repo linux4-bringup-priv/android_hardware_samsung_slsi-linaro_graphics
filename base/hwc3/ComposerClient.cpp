@@ -20,6 +20,7 @@
 
 #include <android-base/logging.h>
 #include <android/binder_ibinder_platform.h>
+#include <hardware/hwcomposer2.h>
 
 #include "Util.h"
 
@@ -74,6 +75,18 @@ ndk::ScopedAStatus ComposerClient::createVirtualDisplay(int32_t width, int32_t h
         err = mResources->addVirtualDisplay(display->display, outputBufferSlotCount);
     }
     return TO_BINDER_STATUS(err);
+}
+
+ndk::ScopedAStatus ComposerClient::getDisplayConfigurations(
+        int64_t display, int32_t maxFrameIntervalNs, std::vector<DisplayConfiguration>* configs) {
+    DEBUG_DISPLAY_FUNC(display);
+    auto err = mHal->getDisplayConfigurations(display, maxFrameIntervalNs, configs);
+    return TO_BINDER_STATUS(err);
+}
+
+ndk::ScopedAStatus ComposerClient::notifyExpectedPresent(int64_t, const ClockMonotonicTimestamp&,
+                                                         int32_t) {
+    return TO_BINDER_STATUS(HWC2_ERROR_UNSUPPORTED);
 }
 
 ndk::ScopedAStatus ComposerClient::destroyLayer(int64_t display, int64_t layer) {
