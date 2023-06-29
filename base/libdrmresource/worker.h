@@ -17,6 +17,7 @@
 #ifndef ANDROID_WORKER_H_
 #define ANDROID_WORKER_H_
 
+#include <android-base/thread_annotations.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string>
@@ -29,10 +30,10 @@ namespace android {
 
 class Worker {
  public:
-  void Lock() {
+  void Lock() ACQUIRE(mutex_) {
     mutex_.lock();
   }
-  void Unlock() {
+  void Unlock() RELEASE(mutex_) {
     mutex_.unlock();
   }
 
