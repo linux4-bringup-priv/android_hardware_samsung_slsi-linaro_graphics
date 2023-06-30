@@ -1279,11 +1279,11 @@ class LayerDumpManager {
     };
 
   private:
-    int32_t mDumpFrameIndex GUARDED_BY(mMutex);
-    int32_t mDumpMaxIndex GUARDED_BY(mMutex);
+    int32_t mDumpFrameIndex; // GUARDED_BY(mMutex)
+    int32_t mDumpMaxIndex; // GUARDED_BY(mMutex)
     ExynosDisplay *mDisplay;
     std::mutex mMutex;
-    ThreadState mState GUARDED_BY(mMutex) = ThreadState::STOPPED;
+    ThreadState mState = ThreadState::STOPPED; // GUARDED_BY(mMutex)
     layerDumpFrameInfo mLayerDumpInfo[LAYER_DUMP_FRAME_CNT_MAX];
     std::thread mThread;
 };

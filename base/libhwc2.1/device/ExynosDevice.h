@@ -255,7 +255,7 @@ class ExynosDevice : public ExynosHotplugHandler, ExynosPanelResetHandler, Exyno
     bool handleVsyncPeriodChange();
     bool handleVsyncPeriodChangeInternal();
     virtual bool supportPerformaceAssurance() { return false; };
-    virtual void performanceAssuranceInternal() REQUIRES(mMutex);
+    virtual void performanceAssuranceInternal(); // REQUIRES(mMutex)
     /*
      * This function checks mActiveConfig of each display
      * in order to get fps for performance.

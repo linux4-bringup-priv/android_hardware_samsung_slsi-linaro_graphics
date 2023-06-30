@@ -125,8 +125,7 @@ class FramebufferManager : public Singleton<FramebufferManager> {
 
     void removeFBsThreadRoutine();
 
-    bool canRemoveBuffer(const std::unique_ptr<Framebuffer> &frameBuf)
-        REQUIRES(mMutex);
+    bool canRemoveBuffer(const std::unique_ptr<Framebuffer> &frameBuf); // REQUIRES(mMutex)
     void removeBufferInternal(std::function<bool(const std::unique_ptr<Framebuffer> &buf)> compareFunc);
     // Put the framebuffers at the back of the cached buffer queue that go beyond
     // MAX_CACHED_BUFFERS to the FBList. Framebuffers in the FBList would be
