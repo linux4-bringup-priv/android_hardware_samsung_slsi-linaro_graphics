@@ -4209,6 +4209,10 @@ int32_t ExynosDisplay::removeClientCompositionLayer(uint32_t layerIndex) {
     return ret;
 }
 
+bool ExynosDisplay::hasClientComposition() {
+    return mClientCompositionInfo.mHasCompositionLayer;
+}
+
 int32_t ExynosDisplay::handleSandwitchedExynosCompositionLayer(
     std::vector<int32_t> &highPriLayers, float totalUsedCapa,
     bool &invalidFlag, int32_t &changeFlag) {

@@ -563,6 +563,7 @@ class ExynosDisplay : public ExynosVsyncHandler {
     int32_t addClientCompositionLayer(uint32_t layerIndex,
                                       uint32_t *isExynosCompositionChanged = NULL);
     int32_t removeClientCompositionLayer(uint32_t layerIndex);
+    bool hasClientComposition();
     int32_t handleSandwitchedExynosCompositionLayer(
         std::vector<int32_t> &highPriLayers, float totalUsedCapa,
         bool &invalidFlag, int32_t &changeFlag);

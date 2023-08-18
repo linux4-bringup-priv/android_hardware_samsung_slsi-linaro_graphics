@@ -637,6 +637,15 @@ int32_t HalImpl::setClientTarget(int64_t display, buffer_handle_t target,
     return mDevice->setClientTarget(halDisplay, target, hwcFence, hwcDataspace);
 }
 
+int32_t HalImpl::getHasClientComposition(int64_t display, bool& outHasClientComp) {
+    ExynosDisplay* halDisplay;
+    RET_IF_ERR(getHalDisplay(display, halDisplay));
+
+    outHasClientComp = halDisplay->hasClientComposition();
+
+    return HWC2_ERROR_NONE;
+}
+
 int32_t HalImpl::setColorMode(int64_t display, ColorMode mode, RenderIntent intent) {
     ExynosDisplay* halDisplay;
     RET_IF_ERR(getHalDisplay(display, halDisplay));
@@ -975,7 +984,7 @@ int32_t HalImpl::validateDisplay(int64_t display, std::vector<int64_t>* outChang
         h2a::translate(hwcProperty, *outClientTargetProperty);
     } // else ignore this error
 
-    return HWC2_ERROR_NONE;
+    return err;
 }
 
 int HalImpl::setExpectedPresentTime(

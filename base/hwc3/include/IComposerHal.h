@@ -169,6 +169,7 @@ class IComposerHal {
                                     const ndk::ScopedFileDescriptor& fence,
                                     common::Dataspace dataspace,
                                     const std::vector<common::Rect>& damage) = 0; // cmd
+    virtual int32_t getHasClientComposition(int64_t display, bool& outHasClientComp) = 0;
     virtual int32_t setColorMode(int64_t display, ColorMode mode, RenderIntent intent) = 0;
     virtual int32_t setColorTransform(int64_t display, const std::vector<float>& matrix) = 0; // cmd
     virtual int32_t setContentType(int64_t display, ContentType contentType) = 0;

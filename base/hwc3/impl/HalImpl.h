@@ -98,6 +98,7 @@ class HalImpl : public IComposerHal {
     int32_t setClientTarget(int64_t display, buffer_handle_t target,
                             const ndk::ScopedFileDescriptor& fence, common::Dataspace dataspace,
                             const std::vector<common::Rect>& damage) override;
+    int32_t getHasClientComposition(int64_t display, bool& outHasClientComp) override;
     int32_t setColorMode(int64_t display, ColorMode mode, RenderIntent intent) override;
     int32_t setColorTransform(int64_t display, const std::vector<float>& matrix) override;
     int32_t setContentType(int64_t display, ContentType contentType) override;
