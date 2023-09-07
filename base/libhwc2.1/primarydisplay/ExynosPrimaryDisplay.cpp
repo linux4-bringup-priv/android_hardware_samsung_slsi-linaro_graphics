@@ -193,7 +193,7 @@ int32_t ExynosPrimaryDisplay::setPowerMode(int32_t mode,
     ALOGD("%s:: FBIOBLANK mode(%d), blank(%d), mPowerModeState(%d)", __func__, mode, fb_blank, mPowerModeState);
     String8 pendConfigDump;
     mPendConfigInfo.dump(pendConfigDump);
-    ALOGD("\tactiveConfig:: %d, %s", mActiveConfig, pendConfigDump.string());
+    ALOGD("\tactiveConfig:: %d, %s", mActiveConfig, pendConfigDump.c_str());
 
     switch (mode) {
     case HWC2_POWER_MODE_DOZE_SUSPEND:

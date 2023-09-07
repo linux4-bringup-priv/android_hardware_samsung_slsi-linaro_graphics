@@ -45,9 +45,9 @@ ExynosPrimaryDisplayFbInterface::ExynosPrimaryDisplayFbInterface()
 void ExynosPrimaryDisplayFbInterface::init(const DisplayIdentifier &display,
                                            void *__unused deviceData, const size_t __unused deviceDataSize) {
     mDisplayIdentifier = display;
-    mDisplayFd = open(display.deconNodeName.string(), O_RDWR);
+    mDisplayFd = open(display.deconNodeName.c_str(), O_RDWR);
     if (mDisplayFd < 0)
-        ALOGE("%s:: %s [%s] failed to open framebuffer", __func__, display.name.string(), display.deconNodeName.string());
+        ALOGE("%s:: %s [%s] failed to open framebuffer", __func__, display.name.c_str(), display.deconNodeName.c_str());
 
     setVsyncFd();
 }

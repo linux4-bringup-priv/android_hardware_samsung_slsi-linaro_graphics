@@ -127,7 +127,7 @@ int32_t ExynosDeviceDrmInterface::getRestrictions(struct dpp_restrictions_info_v
                 for (uint32_t i = 0; i < halFormatNum; i++) {
                     ALOGD("prop : drm format[%d](%c%c%c%c), halFormat(%s)", j,
                           formats[j], formats[j] >> 8, formats[j] >> 16, formats[j] >> 24,
-                          getFormatStr(halFormats[i]).string());
+                          getFormatStr(halFormats[i]).c_str());
                     if (!isSupportSBWC &&
                         (isFormatSBWC(halFormats[i]) ||
                          (halFormats[i] == HAL_PIXEL_FORMAT_EXYNOS_420_SPN_SBWC_DECOMP) ||

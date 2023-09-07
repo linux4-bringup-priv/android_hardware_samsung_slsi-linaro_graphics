@@ -86,31 +86,31 @@ int32_t saveErrorLog(const android::String8 &errString, DisplayIdentifier &displ
 #define DISPLAY_LOGD(type, msg, ...)                                                 \
     {                                                                                \
         if (hwcCheckDebugMessages(type))                                             \
-            ALOGD("%s:: [%s] " msg, __func__, mDisplayName.string(), ##__VA_ARGS__); \
+            ALOGD("%s:: [%s] " msg, __func__, mDisplayName.c_str(), ##__VA_ARGS__); \
     }
 #define MPP_LOGD(type, msg, ...)                                                                 \
     {                                                                                            \
         if (hwcCheckDebugMessages(type))                                                         \
-            ALOGD("%s:: [%s][%d] " msg, __func__, mName.string(), mLogicalIndex, ##__VA_ARGS__); \
+            ALOGD("%s:: [%s][%d] " msg, __func__, mName.c_str(), mLogicalIndex, ##__VA_ARGS__); \
     }
 #endif
-#define DISPLAY_LOGV(msg, ...) ALOGV("[%s] " msg, mDisplayName.string(), ##__VA_ARGS__)
-#define DISPLAY_LOGI(msg, ...) ALOGI("[%s] " msg, mDisplayName.string(), ##__VA_ARGS__)
-#define DISPLAY_LOGW(msg, ...) ALOGW("[%s] " msg, mDisplayName.string(), ##__VA_ARGS__)
+#define DISPLAY_LOGV(msg, ...) ALOGV("[%s] " msg, mDisplayName.c_str(), ##__VA_ARGS__)
+#define DISPLAY_LOGI(msg, ...) ALOGI("[%s] " msg, mDisplayName.c_str(), ##__VA_ARGS__)
+#define DISPLAY_LOGW(msg, ...) ALOGW("[%s] " msg, mDisplayName.c_str(), ##__VA_ARGS__)
 #define DISPLAY_LOGE(msg, ...)                                          \
     {                                                                   \
-        ALOGE("[%s] " msg, mDisplayName.string(), ##__VA_ARGS__);       \
+        ALOGE("[%s] " msg, mDisplayName.c_str(), ##__VA_ARGS__);       \
         String8 saveString;                                             \
         saveString.appendFormat(msg, ##__VA_ARGS__);                    \
         saveErrorLog(saveString, this->mDisplayInfo.displayIdentifier); \
     }
 
-#define MPP_LOGV(msg, ...) ALOGV("[%s][%d] " msg, mName.string(), mLogicalIndex, ##__VA_ARGS__)
-#define MPP_LOGI(msg, ...) ALOGI("[%s][%d] " msg, mName.string(), mLogicalIndex, ##__VA_ARGS__)
-#define MPP_LOGW(msg, ...) ALOGW("[%s][%d] " msg, mName.string(), mLogicalIndex, ##__VA_ARGS__)
+#define MPP_LOGV(msg, ...) ALOGV("[%s][%d] " msg, mName.c_str(), mLogicalIndex, ##__VA_ARGS__)
+#define MPP_LOGI(msg, ...) ALOGI("[%s][%d] " msg, mName.c_str(), mLogicalIndex, ##__VA_ARGS__)
+#define MPP_LOGW(msg, ...) ALOGW("[%s][%d] " msg, mName.c_str(), mLogicalIndex, ##__VA_ARGS__)
 #define MPP_LOGE(msg, ...)                                                    \
     {                                                                         \
-        ALOGE("[%s][%d] " msg, mName.string(), mLogicalIndex, ##__VA_ARGS__); \
+        ALOGE("[%s][%d] " msg, mName.c_str(), mLogicalIndex, ##__VA_ARGS__); \
         String8 saveString;                                                   \
         saveString.appendFormat(msg, ##__VA_ARGS__);                          \
         saveErrorLog(saveString, mAssignedDisplayInfo.displayIdentifier);     \

@@ -309,7 +309,7 @@ void dumpExynosImage(uint32_t type, exynos_image &img) {
     if (!hwcCheckDebugMessages(type))
         return;
     ALOGD("\tbufferHandle: %p, fullWidth: %d, fullHeight: %d, x: %d, y: %d, w: %d, h: %d, format: %s",
-          img.bufferHandle, img.fullWidth, img.fullHeight, img.x, img.y, img.w, img.h, img.exynosFormat.name().string());
+          img.bufferHandle, img.fullWidth, img.fullHeight, img.x, img.y, img.w, img.h, img.exynosFormat.name().c_str());
     ALOGD("\tusageFlags: 0x%" PRIx64 ", layerFlags: 0x%8x, acquireFenceFd: %d, releaseFenceFd: %d",
           img.usageFlags, img.layerFlags, img.acquireFenceFd, img.releaseFenceFd);
     ALOGD("\tdataSpace(%d), blending(%d), transform(0x%2x), compressionType(%8x)",
@@ -318,7 +318,7 @@ void dumpExynosImage(uint32_t type, exynos_image &img) {
 
 void dumpExynosImage(String8 &result, exynos_image &img) {
     result.appendFormat("\tbufferHandle: %p, fullWidth: %d, fullHeight: %d, x: %d, y: %d, w: %d, h: %d, format: %s\n",
-                        img.bufferHandle, img.fullWidth, img.fullHeight, img.x, img.y, img.w, img.h, img.exynosFormat.name().string());
+                        img.bufferHandle, img.fullWidth, img.fullHeight, img.x, img.y, img.w, img.h, img.exynosFormat.name().c_str());
     result.appendFormat("\tusageFlags: 0x%" PRIx64 ", layerFlags: 0x%8x, acquireFenceFd: %d, releaseFenceFd: %d\n",
                         img.usageFlags, img.layerFlags, img.acquireFenceFd, img.releaseFenceFd);
     result.appendFormat("\tdataSpace(%d), blending(%d), transform(0x%2x), compressionType(%8x)\n",
@@ -434,7 +434,7 @@ void printBufLength(buffer_handle_t handle, uint32_t planerNum, size_t *length,
     String8 lengthStr;
     for (uint32_t i = 0; i < bufferNumber; i++)
         lengthStr.appendFormat("%zu ", length[i]);
-    ALOGD("format: 0x%8x, length(%s)", format, lengthStr.string());
+    ALOGD("format: 0x%8x, length(%s)", format, lengthStr.c_str());
 }
 
 int hwcFdClose(int fd) {

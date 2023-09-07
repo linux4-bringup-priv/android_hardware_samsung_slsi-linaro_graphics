@@ -76,7 +76,7 @@ class ExynosExternalDisplayFbInterface : public ExynosDisplayFbInterface {
     virtual int32_t updateHdrCapabilities(std::vector<int32_t> &outTypes,
                                           float *outMaxLuminance, float *outMaxAverageLuminance, float *outMinLuminance);
     virtual bool readHotplugStatus();
-    virtual void updateUeventNodeName(String8 node) { mUeventNode = node.string(); };
+    virtual void updateUeventNodeName(String8 node) { mUeventNode = node.c_str(); };
     virtual bool updateHdrSinkInfo();
 
   protected:

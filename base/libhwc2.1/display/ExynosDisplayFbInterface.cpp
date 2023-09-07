@@ -426,7 +426,7 @@ int32_t ExynosDisplayFbInterface::configFromDisplayConfig(decon_win_config &conf
                     assignedMPP->mPhysicalType,
                     assignedMPP->mPhysicalIndex)) == MAX_DECON_DMA_TYPE) {
         HWC_LOGE(mDisplayIdentifier, "%s:: config has invalid idma_type, assignedMPP(%s)",
-                 __func__, assignedMPP->mName.string());
+                 __func__, assignedMPP->mName.c_str());
         return -EINVAL;
     }
 
@@ -449,7 +449,7 @@ int32_t ExynosDisplayFbInterface::configFromDisplayConfig(decon_win_config &conf
         config.rel_fence = display_config.rel_fence;
         if ((config.format = display_config.format.dpuFormat()) == DECON_PIXEL_FORMAT_MAX) {
             HWC_LOGE(mDisplayIdentifier, "%s:: config has invalid format(%s)",
-                     __func__, display_config.format.name().string());
+                     __func__, display_config.format.name().c_str());
             return -EINVAL;
         }
         config.dpp_parm.comp_src = display_config.comp_src;
@@ -543,7 +543,7 @@ int32_t ExynosDisplayFbInterface::deliverWinConfigData(exynos_dpu_data &dpuData)
     if (ret) {
         result.clear();
         result.appendFormat("WIN_CONFIG ioctl error\n");
-        HWC_LOGE(mDisplayIdentifier, "%s", dumpFbWinConfigInfo(result, mFbConfigData).string());
+        HWC_LOGE(mDisplayIdentifier, "%s", dumpFbWinConfigInfo(result, mFbConfigData).c_str());
         return ret;
     } else {
         dpuData.present_fence = mFbConfigData.present_fence;
@@ -824,7 +824,7 @@ String8 &ExynosDisplayFbInterface::dumpFbWinConfigInfo(String8 &result,
         }
 
         if (debugPrint)
-            ALOGD("%s", configString.string());
+            ALOGD("%s", configString.c_str());
         else
             result.append(configString);
     }

@@ -123,7 +123,7 @@ void ExynosFenceTracer::setFenceInfo(uint32_t fd, const DisplayIdentifier &displ
         ALOGE("Fence trace : Undefined direction!");
 
     FT_LOGI("setFenceInfo(%d):: %s, %s, %s, %s usage: %d",
-            fd, display.name.string(),
+            fd, display.name.c_str(),
             getString(fence_dir_map, seq->dir),
             getString(fence_type_map, seq->type),
             getString(fence_ip_map, seq->ip),
@@ -271,7 +271,7 @@ void ExynosFenceTracer::printLeakFds() {
                 errStringPlus.appendFormat("\n");
         }
     }
-    FT_LOGI("%s", errStringPlus.string());
+    FT_LOGI("%s", errStringPlus.c_str());
 
     errStringMinus.appendFormat("Leak Fds (-1) :\n");
 
@@ -287,7 +287,7 @@ void ExynosFenceTracer::printLeakFds() {
                 errStringMinus.appendFormat("\n");
         }
     }
-    FT_LOGI("%s", errStringMinus.string());
+    FT_LOGI("%s", errStringMinus.c_str());
 }
 
 bool ExynosFenceTracer::validateFencePerFrame(const DisplayIdentifier &display) {
@@ -386,7 +386,7 @@ bool ExynosFenceTracer::validateFences(const DisplayIdentifier &display) {
     if (!(validateFencePerFrame(display)) && fenceWarn(MAX_FENCE_THRESHOLD)) {
         String8 errString;
         errString.appendFormat("Per frame fence leak!\n");
-        ALOGE("%s", errString.string());
+        ALOGE("%s", errString.c_str());
         saveFenceTrace();
         return false;
     }
@@ -445,7 +445,7 @@ int32_t ExynosFenceTracer::saveFenceTrace() {
     printFenceTrace(saveString, localTime);
 
     if (pFile != NULL) {
-        fwrite(saveString.string(), 1, saveString.size(), pFile);
+        fwrite(saveString.c_str(), 1, saveString.size(), pFile);
         mFenceLogSize = (uint32_t)ftell(pFile);
         ret = mFenceLogSize;
         fclose(pFile);

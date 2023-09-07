@@ -29,10 +29,10 @@ void ExynosVirtualDisplayFbInterface::init(const DisplayIdentifier &display,
                                            void *__unused deviceData, const size_t __unused deviceDataSize) {
     mDisplayIdentifier = display;
 
-    mDisplayFd = open(display.deconNodeName.string(), O_RDWR);
+    mDisplayFd = open(display.deconNodeName.c_str(), O_RDWR);
     if (mDisplayFd < 0)
         ALOGE("%s:: %s failed to open framebuffer for WB", __func__,
-              mDisplayIdentifier.name.string());
+              mDisplayIdentifier.name.c_str());
 }
 
 int32_t ExynosVirtualDisplayFbInterface::getColorModes(uint32_t *outNumModes, int32_t *outModes) {

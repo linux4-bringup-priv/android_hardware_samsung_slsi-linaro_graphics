@@ -146,8 +146,8 @@ ExynosDevice::ExynosDevice()
             }
             strDispW.appendFormat("%d", exynos_display->mXres);
             strDispH.appendFormat("%d", exynos_display->mYres);
-            property_set("vendor.hwc.display.w", strDispW.string());
-            property_set("vendor.hwc.display.h", strDispH.string());
+            property_set("vendor.hwc.display.w", strDispW.c_str());
+            property_set("vendor.hwc.display.h", strDispH.c_str());
             break;
         case HWC_DISPLAY_EXTERNAL:
             exynos_display = (ExynosDisplay *)(new ExynosExternalDisplayModule(node));
@@ -466,12 +466,12 @@ bool ExynosDevice::isFirstValidate(ExynosDisplay *display) {
 
         if (mDisplays[i]->mRenderingStateFlags.validateFlag) {
             HDEBUGLOGD(eDebugResourceManager, "\t%s is not first validate, %s is validated",
-                       display->mDisplayName.string(), mDisplays[i]->mDisplayName.string());
+                       display->mDisplayName.c_str(), mDisplays[i]->mDisplayName.c_str());
             return false;
         }
     }
 
-    HDEBUGLOGD(eDebugResourceManager, "\t%s is the first validate", display->mDisplayName.string());
+    HDEBUGLOGD(eDebugResourceManager, "\t%s is the first validate", display->mDisplayName.c_str());
     return true;
 }
 
@@ -496,11 +496,11 @@ bool ExynosDevice::isLastValidate(ExynosDisplay *display) {
 
         if (mDisplays[i]->mRenderingStateFlags.validateFlag == false) {
             HDEBUGLOGD(eDebugResourceManager, "\t%s is not last validate, %s is not validated",
-                       display->mDisplayName.string(), mDisplays[i]->mDisplayName.string());
+                       display->mDisplayName.c_str(), mDisplays[i]->mDisplayName.c_str());
             return false;
         }
     }
-    HDEBUGLOGD(eDebugResourceManager, "\t%s is the last validate", display->mDisplayName.string());
+    HDEBUGLOGD(eDebugResourceManager, "\t%s is the last validate", display->mDisplayName.c_str());
     return true;
 }
 
@@ -525,11 +525,11 @@ bool ExynosDevice::isLastPresent(ExynosDisplay *display) {
 
         if (mDisplays[i]->mRenderingStateFlags.presentFlag == false) {
             HDEBUGLOGD(eDebugResourceManager, "\t%s is not last present, %s is not presented",
-                       display->mDisplayName.string(), mDisplays[i]->mDisplayName.string());
+                       display->mDisplayName.c_str(), mDisplays[i]->mDisplayName.c_str());
             return false;
         }
     }
-    HDEBUGLOGD(eDebugResourceManager, "\t%s is the last present", display->mDisplayName.string());
+    HDEBUGLOGD(eDebugResourceManager, "\t%s is the last present", display->mDisplayName.c_str());
     return true;
 }
 
@@ -691,7 +691,7 @@ void ExynosDevice::dump(uint32_t *outSize, char *outBuffer) {
         if (copySize > result.size())
             copySize = result.size();
         ALOGI("HWC dump:: resultSize(%zu), outSize(%d), copySize(%zu)", result.size(), *outSize, copySize);
-        strlcpy(outBuffer, result.string(), copySize);
+        strlcpy(outBuffer, result.c_str(), copySize);
     }
 
     return;
@@ -833,7 +833,7 @@ void ExynosDevice::setHWCControl(uint32_t display, uint32_t ctrl, int32_t val) {
         if (exynosDisplay == nullptr)
             return;
         ALOGI("%s::%s HWC_CTL_SKIP_STATIC on/off=%d", __func__,
-              exynosDisplay->mDisplayName.string(), val);
+              exynosDisplay->mDisplayName.c_str(), val);
         exynosDisplay->mDisplayControl.skipStaticLayers =
             static_cast<bool>(val);
         setGeometryChanged(GEOMETRY_DEVICE_CONFIG_CHANGED);
@@ -843,7 +843,7 @@ void ExynosDevice::setHWCControl(uint32_t display, uint32_t ctrl, int32_t val) {
         if (exynosDisplay == nullptr)
             return;
         ALOGI("%s::%s HWC_CTL_SKIP_M2M_PROCESSING on/off=%d", __func__,
-              exynosDisplay->mDisplayName.string(), val);
+              exynosDisplay->mDisplayName.c_str(), val);
         exynosDisplay->mDisplayControl.skipM2mProcessing = (unsigned int)val;
         setGeometryChanged(GEOMETRY_DEVICE_CONFIG_CHANGED);
         break;
@@ -1231,7 +1231,7 @@ int32_t ExynosDevice::validateDisplay(
         bool needRefresh = false;
         if (display->mRenderingStateFlags.validateFlag) {
             HDEBUGLOGD(eDebugResourceManager, "%s is already validated",
-                       display->mDisplayName.string());
+                       display->mDisplayName.c_str());
             /*
              * HWC doesn't skip this frame in validate, present time.
              * However this display was already validated in first validate time
@@ -1240,7 +1240,7 @@ int32_t ExynosDevice::validateDisplay(
             display->mNeedSkipValidatePresent = false;
         } else {
             HDEBUGLOGD(eDebugResourceManager, "%s is power on after first validate",
-                       display->mDisplayName.string());
+                       display->mDisplayName.c_str());
             /*
              * This display was not validated in first validate time.
              * It means that power is on after first validate time.
@@ -1348,7 +1348,7 @@ int32_t ExynosDevice::validateAllDisplays(ExynosDisplay *firstDisplay,
              */
             HDEBUGLOGD(eDebugResourceManager,
                        "%s:: validate is skipped in validateDisplays (mNeedSkipPresent is set)",
-                       display->mDisplayName.string());
+                       display->mDisplayName.c_str());
             return true;
         }
 
@@ -1411,7 +1411,7 @@ int32_t ExynosDevice::validateAllDisplays(ExynosDisplay *firstDisplay,
 
         if (display->mLayers.size() == 0)
             ALOGI("%s:: %s validateDisplay layer size is 0",
-                  __func__, display->mDisplayName.string());
+                  __func__, display->mDisplayName.c_str());
 
         if (mGeometryChanged && !(display->mIsSkipFrame)) {
             if ((displayRet = mResourceManager->assignResource(display)) != NO_ERROR) {
@@ -1451,11 +1451,11 @@ int32_t ExynosDevice::validateAllDisplays(ExynosDisplay *firstDisplay,
         if (displayRet != NO_ERROR) {
             String8 errString;
             errString.appendFormat("%s:: validate fail for display[%s] firstValidate(%d), ret(%d)",
-                                   __func__, display->mDisplayName.string(), display == firstDisplay ? 1 : 0, displayRet);
+                                   __func__, display->mDisplayName.c_str(), display == firstDisplay ? 1 : 0, displayRet);
             display->printDebugInfos(errString);
             display->mDisplayInterface->setForcePanic();
 
-            HWC_LOGE(display->mDisplayInfo.displayIdentifier, "%s", errString.string());
+            HWC_LOGE(display->mDisplayInfo.displayIdentifier, "%s", errString.c_str());
             display->setGeometryChanged(GEOMETRY_ERROR_CASE, mGeometryChanged);
             display->setForceClient();
             mResourceManager->resetAssignedResources(display, true);
@@ -1523,14 +1523,14 @@ int32_t ExynosDevice::presentDisplay(ExynosDisplay *display,
     };
 
     HDEBUGLOGD(eDebugResourceManager, "%s: renderingState(%d)",
-               display->mDisplayName.string(), display->mRenderingState);
+               display->mDisplayName.c_str(), display->mRenderingState);
     int32_t ret = 0;
     if (display->mHWCRenderingState == RENDERING_STATE_VALIDATED) {
         ALOGI("%s:: acceptDisplayChanges was not called",
-              display->mDisplayName.string());
+              display->mDisplayName.c_str());
         if (display->acceptDisplayChanges() != HWC2_ERROR_NONE) {
             ALOGE("%s:: acceptDisplayChanges is failed",
-                  display->mDisplayName.string());
+                  display->mDisplayName.c_str());
         }
     }
 
@@ -1584,17 +1584,17 @@ int32_t ExynosDevice::presentDisplay(ExynosDisplay *display,
             /* validated by first validate */
             (display->mRenderingState != RENDERING_STATE_VALIDATED)) {
             errString.appendFormat("%s:: %s display invalid rendering state : %d\n",
-                                   __func__, display->mDisplayName.string(), display->mRenderingState);
+                                   __func__, display->mDisplayName.c_str(), display->mRenderingState);
             return handleErr();
         }
         if (canSkipValidate() == false) {
             HDEBUGLOGD(eDebugSkipValidate, "%s display need validate",
-                       display->mDisplayName.string());
+                       display->mDisplayName.c_str());
             display->mRenderingState = RENDERING_STATE_NONE;
             return HWC2_ERROR_NOT_VALIDATED;
         } else {
             HDEBUGLOGD(eDebugSkipValidate, "%s display validate is skipped",
-                       display->mDisplayName.string());
+                       display->mDisplayName.c_str());
         }
         /*
          * Check HDR10+ layers > HDR10+ IPs
@@ -1630,7 +1630,7 @@ int32_t ExynosDevice::presentDisplay(ExynosDisplay *display,
             }
             if ((ret = display->startPostProcessing()) != NO_ERROR) {
                 errString.appendFormat("%s:: %s display startPostProcessing error : %d\n",
-                                       __func__, display->mDisplayName.string(), ret);
+                                       __func__, display->mDisplayName.c_str(), ret);
                 return handleErr();
             }
         }
@@ -1653,7 +1653,7 @@ int32_t ExynosDevice::presentDisplay(ExynosDisplay *display,
     ret = display->presentDisplay(mDevicePresentInfo, outPresentFence);
     if (ret != HWC2_ERROR_NONE) {
         errString.appendFormat("%s:: %s display present error : %d\n", __func__,
-                               display->mDisplayName.string(), ret);
+                               display->mDisplayName.c_str(), ret);
         return handleErr();
     }
     ret = presentPostProcessing();

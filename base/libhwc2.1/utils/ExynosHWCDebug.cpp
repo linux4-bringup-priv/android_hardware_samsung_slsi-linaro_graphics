@@ -60,18 +60,18 @@ int32_t saveErrorLog(const String8 &errString, DisplayIdentifier &display) {
                                 localTime->tm_mon + 1, localTime->tm_mday,
                                 localTime->tm_hour, localTime->tm_min,
                                 localTime->tm_sec, tv.tv_usec / 1000, ((tv.tv_sec * 1000) + (tv.tv_usec / 1000)),
-                                display.name.string(), errorFrameCount,
-                                errString.string());
+                                display.name.c_str(), errorFrameCount,
+                                errString.c_str());
     } else {
         saveString.appendFormat("%02d-%02d %02d:%02d:%02d.%03lu(%lu) : %s\n",
                                 localTime->tm_mon + 1, localTime->tm_mday,
                                 localTime->tm_hour, localTime->tm_min,
                                 localTime->tm_sec, tv.tv_usec / 1000, ((tv.tv_sec * 1000) + (tv.tv_usec / 1000)),
-                                errString.string());
+                                errString.c_str());
     }
 
     if (pFile != NULL) {
-        fwrite(saveString.string(), 1, saveString.size(), pFile);
+        fwrite(saveString.c_str(), 1, saveString.size(), pFile);
         mErrLogSize = (uint32_t)ftell(pFile);
         ret = mErrLogSize;
         fclose(pFile);

@@ -155,7 +155,7 @@ void ExynosLayer::resizeDisplayFrame(DeviceValidateInfo &validateInfo) {
 
     if ((uint32_t)WIDTH(mDisplayFrame) < minDstWidth) {
         ALOGI("%s DRM layer displayFrame width %d is smaller than otf minWidth %d",
-              mDisplayInfo.displayIdentifier.name.string(),
+              mDisplayInfo.displayIdentifier.name.c_str(),
               WIDTH(mDisplayFrame), minDstWidth);
         mPreprocessedInfo.displayFrame.right = mDisplayFrame.left +
                                                pixel_align(WIDTH(mDisplayFrame), minDstWidth);
@@ -168,7 +168,7 @@ void ExynosLayer::resizeDisplayFrame(DeviceValidateInfo &validateInfo) {
     }
     if ((uint32_t)HEIGHT(mDisplayFrame) < minDstHeight) {
         ALOGI("%s DRM layer displayFrame height %d is smaller than vpp minHeight %d",
-              mDisplayInfo.displayIdentifier.name.string(),
+              mDisplayInfo.displayIdentifier.name.c_str(),
               HEIGHT(mDisplayFrame), minDstHeight);
         mPreprocessedInfo.displayFrame.bottom = mDisplayFrame.top +
                                                 pixel_align(HEIGHT(mDisplayFrame), minDstHeight);
@@ -776,12 +776,12 @@ int32_t ExynosLayer::setDstExynosImage(exynos_image *dst_img) {
 int32_t ExynosLayer::resetAssignedResource() {
     int32_t ret = NO_ERROR;
     if (mM2mMPP != NULL) {
-        HDEBUGLOGD(eDebugResourceManager, "\t\t %s mpp is reset", mM2mMPP->mName.string());
+        HDEBUGLOGD(eDebugResourceManager, "\t\t %s mpp is reset", mM2mMPP->mName.c_str());
         mM2mMPP->resetAssignedState(this);
         mM2mMPP = NULL;
     }
     if (mOtfMPP != NULL) {
-        HDEBUGLOGD(eDebugResourceManager, "\t\t %s mpp is reset", mOtfMPP->mName.string());
+        HDEBUGLOGD(eDebugResourceManager, "\t\t %s mpp is reset", mOtfMPP->mName.c_str());
         mOtfMPP->resetAssignedState();
         mOtfMPP = NULL;
     }
@@ -814,7 +814,7 @@ void ExynosLayer::dump(String8 &result) {
     result.appendFormat("|     handle    |     fd     |  tr  | COMP_TYPE | dataSpace  |  format   |  blend  | planeAlpha | zOrder |          color         | fps | priority | windowIndex        | \n");
     result.appendFormat("+---------------+------------+------+----------+------------+-----------+---------+------------+--------+------------------------+-----+----------+--------------------+\n");
     result.appendFormat("|  %8p | %d, %d, %d | 0x%2x |   %8x  | 0x%8x | %s | 0x%4x  |    %1.3f    |    %d   | 0x%2x, 0x%2x, 0x%2x, 0x%2x |  %2d |    %2d    |    %d               |\n",
-                        mLayerBuffer, fd, fd1, fd2, mTransform, mCompressionInfo.type, mDataSpace, mLayerFormat.name().string(),
+                        mLayerBuffer, fd, fd1, fd2, mTransform, mCompressionInfo.type, mDataSpace, mLayerFormat.name().c_str(),
                         mBlending, mPlaneAlpha, mZOrder, mColor.r, mColor.g, mColor.b, mColor.a, mFps, mOverlayPriority, mWindowIndex);
     result.appendFormat("|---------------+------------+------+------+------+-----+-----------+--------++-----+------+-----+--+-----------+------------++----+----------+--------------------+ \n");
     result.appendFormat("|    colorTr    |            sourceCrop           |          dispFrame       | type | exynosType | validateType | overlayInfo | supportedMPPFlag  | SRAM amount    |\n");
@@ -840,9 +840,9 @@ void ExynosLayer::dump(String8 &result) {
     if ((mOtfMPP == NULL) && (mM2mMPP == NULL))
         result.appendFormat("\tresource is not assigned.\n");
     if (mOtfMPP != NULL)
-        result.appendFormat("\tassignedMPP: %s\n", mOtfMPP->mName.string());
+        result.appendFormat("\tassignedMPP: %s\n", mOtfMPP->mName.c_str());
     if (mM2mMPP != NULL)
-        result.appendFormat("\tassignedM2mMPP: %s\n", mM2mMPP->mName.string());
+        result.appendFormat("\tassignedM2mMPP: %s\n", mM2mMPP->mName.c_str());
     result.appendFormat("\tdump midImg\n");
     dumpExynosImage(result, mMidImg);
 }
@@ -861,7 +861,7 @@ void ExynosLayer::printLayer() {
         fd2 = -1;
     }
     result.appendFormat("handle: %p [fd: %d, %d, %d], acquireFence: %d, mPrevAcquireFence: %d, tr: 0x%2x, COMP_TYPE: %8x, dataSpace: 0x%8x, format: %s\n",
-                        mLayerBuffer, fd, fd1, fd2, mAcquireFence, mPrevAcquireFence, mTransform, mCompressionInfo.type, mDataSpace, mLayerFormat.name().string());
+                        mLayerBuffer, fd, fd1, fd2, mAcquireFence, mPrevAcquireFence, mTransform, mCompressionInfo.type, mDataSpace, mLayerFormat.name().c_str());
     result.appendFormat("\tblend: 0x%4x, planeAlpha: %3.1f, zOrder: %d, color[0x%2x, 0x%2x, 0x%2x, 0x%2x]\n",
                         mBlending, mPlaneAlpha, mZOrder, mColor.r, mColor.g, mColor.b, mColor.a);
     result.appendFormat("\tfps: %2d, priority: %d, windowIndex: %d, mLayerFlag: 0x%8x\n", mFps, mOverlayPriority, mWindowIndex, mLayerFlag);
@@ -883,18 +883,18 @@ void ExynosLayer::printLayer() {
         result.appendFormat("\n");
     }
 
-    ALOGD("%s", result.string());
+    ALOGD("%s", result.c_str());
     result.clear();
 
     if ((mOtfMPP == NULL) && (mM2mMPP == NULL))
         ALOGD("\tresource is not assigned.");
     if (mOtfMPP != NULL)
-        ALOGD("\tassignedMPP: %s", mOtfMPP->mName.string());
+        ALOGD("\tassignedMPP: %s", mOtfMPP->mName.c_str());
     if (mM2mMPP != NULL)
-        ALOGD("\tassignedM2mMPP: %s", mM2mMPP->mName.string());
+        ALOGD("\tassignedM2mMPP: %s", mM2mMPP->mName.c_str());
     ALOGD("\t++ dump midImg ++");
     dumpExynosImage(result, mMidImg);
-    ALOGD("%s", result.string());
+    ALOGD("%s", result.c_str());
 }
 
 void ExynosLayer::setGeometryChanged(uint64_t changedBit,

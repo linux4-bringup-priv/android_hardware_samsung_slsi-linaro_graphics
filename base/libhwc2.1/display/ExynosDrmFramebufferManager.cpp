@@ -210,20 +210,20 @@ int32_t FramebufferManager::getBuffer(const uint32_t displayType,
         drmFormat = formatDesc.drmFormat;
         if (drmFormat == DRM_FORMAT_UNDEFINED) {
             HWC_LOGE_NODISP("%s:: unknown drm format (%s)",
-                            __func__, formatDesc.name.string());
+                            __func__, formatDesc.name.c_str());
             return -EINVAL;
         }
 
         bpp = getBytePerPixelOfPrimaryPlane(formatDesc.halFormat);
         if ((bufferNum = formatDesc.bufferNum) == 0) {
             HWC_LOGE_NODISP("%s:: getBufferNumOfFormat(%s) error",
-                            __func__, formatDesc.name.string());
+                            __func__, formatDesc.name.c_str());
             return -EINVAL;
         }
         if (((planeNum = formatDesc.planeNum) == 0) ||
             (planeNum > MAX_PLANE_NUM)) {
             HWC_LOGE_NODISP("%s:: getPlaneNumOfFormat(%s) error, planeNum(%d)",
-                            __func__, formatDesc.name.string(), planeNum);
+                            __func__, formatDesc.name.c_str(), planeNum);
             return -EINVAL;
         }
 

@@ -210,9 +210,9 @@ void ExynosCompositionInfo::dump(String8 &result) {
         if ((mOtfMPP == NULL) && (mM2mMPP == NULL))
             result.appendFormat("\tresource is not assigned\n");
         if (mOtfMPP != NULL)
-            result.appendFormat("\tassignedOtfMPP: %s\n", mOtfMPP->mName.string());
+            result.appendFormat("\tassignedOtfMPP: %s\n", mOtfMPP->mName.c_str());
         if (mM2mMPP != NULL)
-            result.appendFormat("\t%s\n", mM2mMPP->mName.string());
+            result.appendFormat("\t%s\n", mM2mMPP->mName.c_str());
     }
     if (mTargetBuffer != NULL) {
         uint64_t internal_format = 0;
@@ -682,7 +682,7 @@ int ExynosDisplay::handleStaticLayers(ExynosCompositionInfo &compositionInfo) {
                     android::String8 result;
                     result.appendFormat("config[%zu]\n", i);
                     dumpConfig(result, mLastDpuData.configs[i]);
-                    DISPLAY_LOGE("%s", result.string());
+                    DISPLAY_LOGE("%s", result.c_str());
                 }
                 DISPLAY_LOGE("compositionInfo.mLastWinConfigData config [%d, %d, %d]",
                              compositionInfo.mLastWinConfigData.fd_idma[0],
@@ -1248,7 +1248,7 @@ int32_t ExynosDisplay::configureHandle(ExynosLayer &layer, int fence_fd,
 
     if (!isFormatLossy(gmeta.format) && (bufSize < srcSize)) {
         DISPLAY_LOGE("%s:: buffer size is smaller than source size, buf(size: %d, format: %d), src(w: %d, h: %d, format: %s)",
-                     __func__, gmeta.size, gmeta.format, cfg.src.f_w, cfg.src.f_h, cfg.format.name().string());
+                     __func__, gmeta.size, gmeta.format, cfg.src.f_w, cfg.src.f_h, cfg.format.name().c_str());
         return -EINVAL;
     }
 
@@ -1469,7 +1469,7 @@ int32_t ExynosDisplay::configureOverlay(ExynosCompositionInfo &compositionInfo) 
     uint64_t srcSize = (uint64_t)config.src.f_w * config.src.f_h * config.format.bpp();
     if (!isFormatLossy(gmeta.format) && (bufSize < srcSize)) {
         DISPLAY_LOGE("%s:: buffer size is smaller than source size, buf(size: %d, format: %d), src(w: %d, h: %d, format: %s)",
-                     __func__, gmeta.size, gmeta.format, config.src.f_w, config.src.f_h, config.format.name().string());
+                     __func__, gmeta.size, gmeta.format, config.src.f_w, config.src.f_h, config.format.name().c_str());
         return -EINVAL;
     }
 
@@ -1535,47 +1535,47 @@ void ExynosDisplay::printDebugInfos(String8 &reason) {
                         localTime->tm_hour, localTime->tm_min,
                         localTime->tm_sec, tv.tv_usec / 1000,
                         ((tv.tv_sec * 1000) + (tv.tv_usec / 1000)));
-    ALOGD("%s", reason.string());
+    ALOGD("%s", reason.c_str());
 
     if (errorFrameCount >= HWC_PRINT_FRAME_NUM)
         writeFile = false;
     else {
         char filePath[128];
-        sprintf(filePath, "%s/%s_hwc_debug%d.dump", ERROR_LOG_PATH0, mDisplayName.string(), (int)errorFrameCount);
+        sprintf(filePath, "%s/%s_hwc_debug%d.dump", ERROR_LOG_PATH0, mDisplayName.c_str(), (int)errorFrameCount);
         pFile = fopen(filePath, "wb");
         if (pFile == NULL) {
             ALOGE("Fail to open file %s, error: %s", filePath, strerror(errno));
-            sprintf(filePath, "%s/%s_hwc_debug%d.dump", ERROR_LOG_PATH1, mDisplayName.string(), (int)errorFrameCount);
+            sprintf(filePath, "%s/%s_hwc_debug%d.dump", ERROR_LOG_PATH1, mDisplayName.c_str(), (int)errorFrameCount);
             pFile = fopen(filePath, "wb");
         }
         if (pFile == NULL) {
             ALOGE("Fail to open file %s, error: %s", filePath, strerror(errno));
         } else {
             ALOGI("%s was created", filePath);
-            fwrite(reason.string(), 1, reason.size(), pFile);
+            fwrite(reason.c_str(), 1, reason.size(), pFile);
         }
     }
     errorFrameCount++;
 
     android::String8 result;
     result.appendFormat("%s mGeometryChanged(%" PRIx64 "), mRenderingState(%d)\n",
-                        mDisplayName.string(), mGeometryChanged, mRenderingState);
+                        mDisplayName.c_str(), mGeometryChanged, mRenderingState);
     result.appendFormat("=======================  dump composition infos  ================================\n");
     ExynosCompositionInfo clientCompInfo = mClientCompositionInfo;
     ExynosCompositionInfo exynosCompInfo = mExynosCompositionInfo;
     clientCompInfo.dump(result);
     exynosCompInfo.dump(result);
-    ALOGD("%s", result.string());
+    ALOGD("%s", result.c_str());
     if (pFile != NULL) {
-        fwrite(result.string(), 1, result.size(), pFile);
+        fwrite(result.c_str(), 1, result.size(), pFile);
     }
     result.clear();
 
     result.appendFormat("=======================  dump exynos layers (%zu)  ================================\n",
                         mLayers.size());
-    ALOGD("%s", result.string());
+    ALOGD("%s", result.c_str());
     if (pFile != NULL) {
-        fwrite(result.string(), 1, result.size(), pFile);
+        fwrite(result.c_str(), 1, result.size(), pFile);
     }
     result.clear();
     for (uint32_t i = 0; i < mLayers.size(); i++) {
@@ -1583,16 +1583,16 @@ void ExynosDisplay::printDebugInfos(String8 &reason) {
         layer->printLayer();
         if (pFile != NULL) {
             layer->dump(result);
-            fwrite(result.string(), 1, result.size(), pFile);
+            fwrite(result.c_str(), 1, result.size(), pFile);
             result.clear();
         }
     }
 
     if (mUseDpu) {
         result.appendFormat("=============================  dump win configs  ===================================\n");
-        ALOGD("%s", result.string());
+        ALOGD("%s", result.c_str());
         if (pFile != NULL) {
-            fwrite(result.string(), 1, result.size(), pFile);
+            fwrite(result.c_str(), 1, result.size(), pFile);
         }
         result.clear();
         for (size_t i = 0; i < mDpuData.configs.size(); i++) {
@@ -1601,7 +1601,7 @@ void ExynosDisplay::printDebugInfos(String8 &reason) {
             if (pFile != NULL) {
                 result.appendFormat("config[%zu]\n", i);
                 dumpConfig(result, mDpuData.configs[i]);
-                fwrite(result.string(), 1, result.size(), pFile);
+                fwrite(result.c_str(), 1, result.size(), pFile);
                 result.clear();
             }
         }
@@ -1631,7 +1631,7 @@ int32_t ExynosDisplay::validateWinConfigData() {
                     if ((config.assignedMPP != NULL) &&
                         (config.assignedMPP == compare_config.assignedMPP)) {
                         DISPLAY_LOGE("WIN_CONFIG error: duplicated assignedMPP(%s) between win%zu, win%zu",
-                                     config.assignedMPP->mName.string(), i, j);
+                                     config.assignedMPP->mName.c_str(), i, j);
                         compare_config.state = compare_config.WIN_STATE_DISABLED;
                         flagValidConfig = false;
                         continue;
@@ -1672,7 +1672,7 @@ int32_t ExynosDisplay::validateWinConfigData() {
                     (config.src.h % srcHeightAlign != 0)) {
                     DISPLAY_LOGE("WIN_CONFIG error: invalid src alignment : %zu, "
                                  "assignedMPP: %s, mppType:%d, format(%s), s_x: %d(%d), s_y: %d(%d), s_w : %d(%d), s_h : %d(%d)",
-                                 i, config.assignedMPP->mName.string(), exynosMPP->mLogicalType, config.format.name().string(), config.src.x,
+                                 i, config.assignedMPP->mName.c_str(), exynosMPP->mLogicalType, config.format.name().c_str(), config.src.x,
                                  srcXAlign, config.src.y, srcYAlign, config.src.w, srcWidthAlign, config.src.h, srcHeightAlign);
                     configInvalid = true;
                 }
@@ -1748,8 +1748,8 @@ int ExynosDisplay::canApplyWindowUpdate(const exynos_dpu_data &lastConfigsData, 
         DISPLAY_LOGD(eDebugWindowUpdate,
                      "\tstate[%d, %d], format[%s, %s], blending[%d, %d], plane_alpha[%f, %f]",
                      lastConfigsData.configs[index].state, newConfigsData.configs[index].state,
-                     lastConfigsData.configs[index].format.name().string(),
-                     newConfigsData.configs[index].format.name().string(),
+                     lastConfigsData.configs[index].format.name().c_str(),
+                     newConfigsData.configs[index].format.name().c_str(),
                      lastConfigsData.configs[index].blending, newConfigsData.configs[index].blending,
                      lastConfigsData.configs[index].plane_alpha, newConfigsData.configs[index].plane_alpha);
         return -1;
@@ -2268,7 +2268,7 @@ int32_t ExynosDisplay::getColorModes(
             uint32_t index = 0;
             for (auto mode : mDisplayColorModes) {
                 outModes[index++] = mode.second.modeId;
-                ALOGI("[%s] %s:: Supported color modes [%u, %u] (%s)", mDisplayName.string(), __func__,
+                ALOGI("[%s] %s:: Supported color modes [%u, %u] (%s)", mDisplayName.c_str(), __func__,
                       mode.second.modeId, mode.second.gamutId, mode.second.modeName.c_str());
             }
         }
@@ -2552,16 +2552,16 @@ int32_t ExynosDisplay::handleSkipPresent(int32_t *outPresentFence) {
     }
     if (mNeedSkipValidatePresent) {
         ALOGD("\t%s: This display might have been turned on after first validate time",
-              mDisplayName.string());
+              mDisplayName.c_str());
         ret = HWC2_ERROR_NONE;
     } else if (mRenderingState == RENDERING_STATE_NONE) {
         ALOGD("\t%s: present has been called without validate after power on - 1",
-              mDisplayName.string());
+              mDisplayName.c_str());
         ret = HWC2_ERROR_NONE;
     } else {
         /* mRenderingState == RENDERING_STATE_PRESENTED */
         ALOGD("\t%s: present has been called without validate after power on - 2",
-              mDisplayName.string());
+              mDisplayName.c_str());
         ret = HWC2_ERROR_NOT_VALIDATED;
     }
 
@@ -2575,7 +2575,7 @@ int32_t ExynosDisplay::forceSkipPresentDisplay(int32_t *outPresentFence) {
     int ret = 0;
     HDEBUGLOGD(eDebugResourceManager,
                "%s present is forced to be skipped",
-               mDisplayName.string());
+               mDisplayName.c_str());
 
     closeFencesForSkipFrame(RENDERING_STATE_PRESENTED);
     *outPresentFence = -1;
@@ -2804,7 +2804,7 @@ int32_t ExynosDisplay::presentDisplay(DevicePresentInfo &presentInfo,
                          mLayers[i]->mExynosCompositionType,
                          mLayers[i]->mValidateCompositionType);
             if (mLayers[i]->mM2mMPP != NULL)
-                DISPLAY_LOGE("\t%s is assigned", mLayers[i]->mM2mMPP->mName.string());
+                DISPLAY_LOGE("\t%s is assigned", mLayers[i]->mM2mMPP->mName.c_str());
             /* Fences would be closed by handlePresentError */
             return -EINVAL;
         }
@@ -2936,7 +2936,7 @@ int32_t ExynosDisplay::setClientTarget(buffer_handle_t target,
                 for (size_t i = 0; i < mLastDpuData.configs.size(); i++) {
                     errString.appendFormat("config[%zu]\n", i);
                     dumpConfig(errString, mLastDpuData.configs[i]);
-                    DISPLAY_LOGE("\t%s", errString.string());
+                    DISPLAY_LOGE("\t%s", errString.c_str());
                     errString.clear();
                 }
                 errString.appendFormat("%s:: skip flag is enabled but buffer is updated\n",
@@ -3716,7 +3716,7 @@ int32_t ExynosDisplay::forceSkipValidateDisplay(
 
     HDEBUGLOGD(eDebugResourceManager,
                "%s validate is forced to be skipped",
-               mDisplayName.string());
+               mDisplayName.c_str());
     *outNumTypes = 0;
     *outNumRequests = 0;
 
@@ -3896,7 +3896,7 @@ void ExynosDisplay::dumpConfig(const exynos_win_config_data &c) {
                      c.acq_fence, c.rel_fence,
                      c.src.f_w, c.src.f_h, c.src.x, c.src.y, c.src.w, c.src.h,
                      c.dst.f_w, c.dst.f_h, c.dst.x, c.dst.y, c.dst.w, c.dst.h,
-                     c.format.name().string(), c.plane_alpha, c.transform, c.dataspace, c.hdr_enable,
+                     c.format.name().c_str(), c.plane_alpha, c.transform, c.dataspace, c.hdr_enable,
                      c.blending, c.protection, c.compressionInfo.type, c.comp_src,
                      c.transparent_area.x, c.transparent_area.y, c.transparent_area.w, c.transparent_area.h,
                      c.opaque_area.x, c.opaque_area.y, c.opaque_area.w, c.opaque_area.h);
@@ -3905,7 +3905,7 @@ void ExynosDisplay::dumpConfig(const exynos_win_config_data &c) {
 
 void ExynosDisplay::dump(String8 &result) {
     result.appendFormat("[%s] display information size: %d x %d, vsyncState: %d, colorMode: %d, colorTransformHint: %d\n",
-                        mDisplayName.string(),
+                        mDisplayName.c_str(),
                         mXres, mYres, mVsyncState, mColorMode, mColorTransformHint);
     mClientCompositionInfo.dump(result);
     mExynosCompositionInfo.dump(result);
@@ -3933,7 +3933,7 @@ void ExynosDisplay::dumpConfig(String8 &result, const exynos_win_config_data &c)
                             c.acq_fence, c.rel_fence,
                             c.src.f_w, c.src.f_h, c.src.x, c.src.y, c.src.w, c.src.h,
                             c.dst.f_w, c.dst.f_h, c.dst.x, c.dst.y, c.dst.w, c.dst.h,
-                            c.format.name().string(), c.plane_alpha, c.transform, c.dataspace, c.hdr_enable, c.blending, c.protection,
+                            c.format.name().c_str(), c.plane_alpha, c.transform, c.dataspace, c.hdr_enable, c.blending, c.protection,
                             c.compressionInfo.type, c.comp_src,
                             c.transparent_area.x, c.transparent_area.y, c.transparent_area.w, c.transparent_area.h,
                             c.opaque_area.x, c.opaque_area.y, c.opaque_area.w, c.opaque_area.h);
@@ -3956,7 +3956,7 @@ void ExynosDisplay::printConfig(exynos_win_config_data &c) {
               c.acq_fence, c.rel_fence,
               c.src.f_w, c.src.f_h, c.src.x, c.src.y, c.src.w, c.src.h,
               c.dst.f_w, c.dst.f_h, c.dst.x, c.dst.y, c.dst.w, c.dst.h,
-              c.format.name().string(), c.plane_alpha, c.transform, c.dataspace, c.hdr_enable, c.blending, c.protection,
+              c.format.name().c_str(), c.plane_alpha, c.transform, c.dataspace, c.hdr_enable, c.blending, c.protection,
               c.compressionInfo.type, c.comp_src,
               c.transparent_area.x, c.transparent_area.y, c.transparent_area.w, c.transparent_area.h,
               c.opaque_area.x, c.opaque_area.y, c.opaque_area.w, c.opaque_area.h);
@@ -4274,7 +4274,7 @@ int32_t ExynosDisplay::handleSandwitchedExynosCompositionLayer(
             layer->resetAssignedResource();
             if ((ret = m2mMPP->assignMPP(mDisplayInfo, layer)) != NO_ERROR) {
                 HWC_LOGE(mDisplayInfo.displayIdentifier, "%s:: %s MPP assignMPP() error (%d)",
-                         __func__, m2mMPP->mName.string(), ret);
+                         __func__, m2mMPP->mName.c_str(), ret);
                 return ret;
             }
             if (layer->mValidateCompositionType == HWC2_COMPOSITION_DEVICE)
@@ -5184,7 +5184,7 @@ void ExynosDisplay::writeDumpData(int32_t frameNo, int32_t layerNo,
                 else
                     scriptText.appendFormat("-h %dx%d_r8g8b8a8_0_0_0_0\n", layerInfo->stride, layerInfo->vStride);
 
-                fwrite(scriptText.string(), 1, scriptText.size(), scfp);
+                fwrite(scriptText.c_str(), 1, scriptText.size(), scfp);
                 fclose(scfp);
             }
         }

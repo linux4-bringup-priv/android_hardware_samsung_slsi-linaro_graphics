@@ -43,7 +43,7 @@ void ExynosDeviceInterface::printDppRestriction(struct dpp_ch_restriction res) {
 
     ALOGD("format cnt: %d", res.restriction.format_cnt);
     for (int i = 0; i < res.restriction.format_cnt; i++) {
-        ALOGD("[%d] format: %d (%s)", i, res.restriction.format[i], getFormatStr(res.restriction.format[i]).string());
+        ALOGD("[%d] format: %d (%s)", i, res.restriction.format[i], getFormatStr(res.restriction.format[i]).c_str());
     }
 
     ALOGD("scale down: %d, up: %d", res.restriction.scale_down, res.restriction.scale_up);

@@ -73,10 +73,10 @@ void ExynosExternalDisplayFbInterface::init(const DisplayIdentifier &display,
                                             void *__unused deviceData, const size_t __unused deviceDataSize) {
     mDisplayIdentifier = display;
 
-    mDisplayFd = open(display.deconNodeName.string(), O_RDWR);
+    mDisplayFd = open(display.deconNodeName.c_str(), O_RDWR);
     if (mDisplayFd < 0)
         ALOGE("%s:: %s failed to open framebuffer", __func__,
-              mDisplayIdentifier.name.string());
+              mDisplayIdentifier.name.c_str());
     setVsyncFd();
 
     *mDVTimings = {};
@@ -90,7 +90,7 @@ int32_t ExynosExternalDisplayFbInterface::getDisplayConfigs(uint32_t *outNumConf
     if (outConfigs != NULL) {
         if (mConfigurations.size() != *outNumConfigs) {
             HWC_LOGE(mDisplayIdentifier, "%s outNumConfigs(%d) is different with the number of configurations(%zu)",
-                     mDisplayIdentifier.name.string(), *outNumConfigs, mConfigurations.size());
+                     mDisplayIdentifier.name.c_str(), *outNumConfigs, mConfigurations.size());
             return HWC2_ERROR_BAD_PARAMETER;
         }
 
@@ -102,7 +102,7 @@ int32_t ExynosExternalDisplayFbInterface::getDisplayConfigs(uint32_t *outNumConf
         dp_data.state = dp_data.EXYNOS_DISPLAYPORT_STATE_PRESET;
         if (ioctl(mDisplayFd, EXYNOS_SET_DISPLAYPORT_CONFIG, &dp_data) < 0) {
             HWC_LOGE(mDisplayIdentifier, "%s fail to send selected config data, %d",
-                     mDisplayIdentifier.name.string(), errno);
+                     mDisplayIdentifier.name.c_str(), errno);
             return HWC2_ERROR_BAD_PARAMETER;
         }
 
@@ -139,7 +139,7 @@ int32_t ExynosExternalDisplayFbInterface::getDisplayConfigs(uint32_t *outNumConf
 
     if (mConfigurations.size() == 0) {
         HWC_LOGE(mDisplayIdentifier, "%s do not receivce any configuration info",
-                 mDisplayIdentifier.name.string());
+                 mDisplayIdentifier.name.c_str());
         return HWC2_ERROR_BAD_PARAMETER;
     }
 

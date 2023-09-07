@@ -35,7 +35,7 @@
     if (CC_UNLIKELY(ATRACE_ENABLED())) {                                                \
         ::android::String8 _traceName_;                                                 \
         _traceName_.appendFormat("%s(display=%" PRId64 ",..)", __kFullName__, display); \
-        ATRACE_BEGIN(_traceName_.string());                                             \
+        ATRACE_BEGIN(_traceName_.c_str());                                             \
     }                                                                                   \
     ScopedTraceEnder _traceEnder_
 #else

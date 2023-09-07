@@ -773,7 +773,7 @@ void ExynosMPP::ResourceManageThread::threadLoop() {
     if (mExynosMPP == NULL)
         return;
 
-    ALOGI("%s threadLoop is started", mExynosMPP->mName.string());
+    ALOGI("%s threadLoop is started", mExynosMPP->mName.c_str());
     while (mRunning) {
         Mutex::Autolock lock(mMutex);
         while ((mFreedBuffers.size() == 0) &&
@@ -791,7 +791,7 @@ void ExynosMPP::ResourceManageThread::threadLoop() {
             if ((mStateFences.size() != 0) &&
                 (mExynosMPP->mHWState != MPP_HW_STATE_RUNNING)) {
                 ALOGW("%s, mHWState(%d) but mStateFences size(%zu)",
-                      mExynosMPP->mName.string(), mExynosMPP->mHWState,
+                      mExynosMPP->mName.c_str(), mExynosMPP->mHWState,
                       mStateFences.size());
                 checkStateFences();
             }
@@ -801,7 +801,7 @@ void ExynosMPP::ResourceManageThread::threadLoop() {
             freeBuffers();
         }
     }
-    ALOGI("%s threadLoop is ended", mExynosMPP->mName.string());
+    ALOGI("%s threadLoop is ended", mExynosMPP->mName.c_str());
 }
 
 void ExynosMPP::ResourceManageThread::freeBuffers() {
@@ -852,7 +852,7 @@ bool ExynosMPP::ResourceManageThread::checkStateFences() {
         if (mExynosMPP->mFenceTracer.fence_valid(fence)) {
             if (sync_wait(fence, 5000) < 0) {
                 HWC_LOGE_NODISP("%s::[%s][%d] sync_wait(%d) error(%s)", __func__,
-                                mExynosMPP->mName.string(), mExynosMPP->mLogicalIndex, fence, strerror(errno));
+                                mExynosMPP->mName.c_str(), mExynosMPP->mLogicalIndex, fence, strerror(errno));
                 ret = false;
             }
             // mExynosMPP->mAssignedDisplay can be null
@@ -1112,7 +1112,7 @@ bool ExynosMPP::needDstBufRealloc(struct exynos_image &dst, uint32_t index) {
 
     MPP_LOGD(eDebugMPP | eDebugBuf, "\tdst_handle(%p)", dst_handle);
     MPP_LOGD(eDebugMPP | eDebugBuf, "\tAssignedDisplay[%d, %d] format[0x%8x, %s], bufferType[%d, %d], usageFlags: 0x%" PRIx64 "",
-             mPrevAssignedDisplayType, assignedDisplay, gmeta.format, dst.exynosFormat.name().string(),
+             mPrevAssignedDisplayType, assignedDisplay, gmeta.format, dst.exynosFormat.name().c_str(),
              mDstImgs[index].bufferType, getBufferType(dst.usageFlags), dst.usageFlags);
 
     bool realloc = (mPrevAssignedDisplayType != assignedDisplay) ||
@@ -1222,7 +1222,7 @@ int32_t ExynosMPP::setupLayer(exynos_mpp_img_info *srcImgInfo, struct exynos_ima
     android_dataspace_t dataspace = src.dataSpace;
 
     if (bufferNum == 0) {
-        MPP_LOGE("%s:: Fail to get bufferNum(%d), format(%s)", __func__, bufferNum, formatDesc.name.string());
+        MPP_LOGE("%s:: Fail to get bufferNum(%d), format(%s)", __func__, bufferNum, formatDesc.name.c_str());
         return -EINVAL;
     }
 
@@ -1239,7 +1239,7 @@ int32_t ExynosMPP::setupLayer(exynos_mpp_img_info *srcImgInfo, struct exynos_ima
         bufFds[2] = gmeta.fd2;
         if (getBufLength(srcHandle, MAX_HW2D_PLANES, bufLength, formatDesc.halFormat, src.fullWidth, src.fullHeight) != NO_ERROR) {
             MPP_LOGE("%s:: invalid bufferLength(%zu, %zu, %zu), format(%s)", __func__,
-                     bufLength[0], bufLength[1], bufLength[2], src.exynosFormat.name().string());
+                     bufLength[0], bufLength[1], bufLength[2], src.exynosFormat.name().c_str());
             return -EINVAL;
         }
 
@@ -1275,7 +1275,7 @@ int32_t ExynosMPP::setupLayer(exynos_mpp_img_info *srcImgInfo, struct exynos_ima
     MPP_LOGD(eDebugMPP, "source configuration:");
     MPP_LOGD(eDebugMPP, "\tImageDimension[%d, %d], ImageType[%s, 0x%8x]",
              src.fullWidth, src.fullHeight,
-             src.exynosFormat.name().string(), dataspace);
+             src.exynosFormat.name().c_str(), dataspace);
     MPP_LOGD(eDebugMPP, "\tImageBuffer handle: %p, fds[%d, %d, %d], bufLength[%zu, %zu, %zu], bufferNum: %d, acquireFence: %d, attribute: %d",
              srcHandle, bufFds[0], bufFds[1], bufFds[2], bufLength[0], bufLength[1], bufLength[2],
              bufferNum, srcImgInfo->acrylicAcquireFenceFd, attribute);
@@ -1386,7 +1386,7 @@ int32_t ExynosMPP::setupDst(exynos_mpp_img_info *dstImgInfo) {
     uint32_t bufferNum = formatDesc.bufferNum;
     if (bufferNum == 0) {
         MPP_LOGE("%s:: Fail to get bufferNum(%d), format(%s)", __func__,
-                 bufferNum, dstImgInfo->format.name().string());
+                 bufferNum, dstImgInfo->format.name().c_str());
         return -EINVAL;
     }
 
@@ -1401,7 +1401,7 @@ int32_t ExynosMPP::setupDst(exynos_mpp_img_info *dstImgInfo) {
     if (getBufLength(dstHandle, MAX_HW2D_PLANES, bufLength, formatDesc.halFormat,
                      gmeta.stride, gmeta.vstride) != NO_ERROR) {
         MPP_LOGE("%s:: invalid bufferLength(%zu, %zu, %zu), format(%s)", __func__,
-                 bufLength[0], bufLength[1], bufLength[2], dstImgInfo->format.name().string());
+                 bufLength[0], bufLength[1], bufLength[2], dstImgInfo->format.name().c_str());
         return -EINVAL;
     }
 
@@ -1453,7 +1453,7 @@ int32_t ExynosMPP::setupDst(exynos_mpp_img_info *dstImgInfo) {
 
     MPP_LOGD(eDebugMPP, "destination configuration:");
     MPP_LOGD(eDebugMPP, "\tImageDimension[%d, %d], ImageType[%s, %d], target luminance[%d, %d]",
-             gmeta.stride, gmeta.vstride, dstImgInfo->format.name().string(),
+             gmeta.stride, gmeta.vstride, dstImgInfo->format.name().c_str(),
              dataspace, metaInfo.minLuminance, metaInfo.maxLuminance);
     MPP_LOGD(eDebugMPP, "\tImageBuffer handle: %p, fds[%d, %d, %d], bufLength[%zu, %zu, %zu], bufferNum: %d, releaseFence: %d, attribute: %d",
              dstHandle, bufFds[0], bufFds[1], bufFds[2], bufLength[0], bufLength[1], bufLength[2],
@@ -1555,7 +1555,7 @@ int32_t ExynosMPP::doPostProcessingInternal() {
         setAcrylFence();
         String8 dumpStr;
         dumpBufInfo(dumpStr);
-        ALOGD("%s", dumpStr.string());
+        ALOGD("%s", dumpStr.c_str());
         return -EPERM;
     }
 
@@ -1740,7 +1740,7 @@ int32_t ExynosMPP::doPostProcessing(struct exynos_image &src, struct exynos_imag
         }
         if (mDstImgs[mCurrentDstBuf].format != dst.exynosFormat) {
             MPP_LOGD(eDebugMPP, "dst format is changed (%s -> %s)",
-                     mDstImgs[mCurrentDstBuf].format.name().string(), dst.exynosFormat.name().string());
+                     mDstImgs[mCurrentDstBuf].format.name().c_str(), dst.exynosFormat.name().c_str());
             mDstImgs[mCurrentDstBuf].format = dst.exynosFormat;
         }
     }
@@ -2837,7 +2837,7 @@ void ExynosMPP::dump(String8 &result) {
         assignedDisplayType = mAssignedDisplayInfo.displayIdentifier.type;
 
     result.appendFormat("%s: types mppType(%d), (p:%d, l:0x%2x), indexs(p:%d, l:%d), preAssignDisplay(0x%2x)\n",
-                        mName.string(), mMPPType, mPhysicalType, mLogicalType, mPhysicalIndex, mLogicalIndex, mPreAssignDisplayInfo);
+                        mName.c_str(), mMPPType, mPhysicalType, mLogicalType, mPhysicalIndex, mLogicalIndex, mPreAssignDisplayInfo);
     result.appendFormat("\tEnable(by debug): %d, Disable(by scenario):0x%8x, HWState: %d, AssignedState: %d, assignedDisplay(%d)\n",
                         mEnableByDebug, mDisableByUserScenario, mHWState, mAssignedState, assignedDisplayType);
     result.appendFormat("\tPrevAssignedState: %d, PrevAssignedDisplayType: %d, ReservedDisplay: %d\n",
@@ -2852,7 +2852,7 @@ void ExynosMPP::dumpBufInfo(String8 &str) {
     for (auto &src : mAssignedSources) {
         String8 dumpStr;
         src->dump(dumpStr);
-        str.appendFormat("src[%d] %s\n", index++, dumpStr.string());
+        str.appendFormat("src[%d] %s\n", index++, dumpStr.c_str());
 
         if (getBufLength(src->mSrcImg.bufferHandle, MAX_HW2D_PLANES, bufLength,
                          src->mSrcImg.exynosFormat.halFormat(), src->mSrcImg.fullWidth,
@@ -2861,7 +2861,7 @@ void ExynosMPP::dumpBufInfo(String8 &str) {
             continue;
         }
         str.appendFormat("\tformat(%s), BufLength(%zu, %zu, %zu)\n",
-                         src->mSrcImg.exynosFormat.name().string(),
+                         src->mSrcImg.exynosFormat.name().c_str(),
                          bufLength[0], bufLength[1], bufLength[2]);
     }
 
@@ -2877,7 +2877,7 @@ void ExynosMPP::dumpBufInfo(String8 &str) {
         return;
     }
     str.appendFormat("\tformat(%s), BufLength(%zu, %zu, %zu)\n",
-                     mDstImgs[mCurrentDstBuf].format.name().string(),
+                     mDstImgs[mCurrentDstBuf].format.name().c_str(),
                      bufLength[0], bufLength[1], bufLength[2]);
 }
 
@@ -2910,9 +2910,9 @@ void ExynosMPP::closeFences() {
 void ExynosMPP::addFormatRestrictions(restriction_key table) {
     mFormatRestrictions.push_back(table);
     HDEBUGLOGD(eDebugAttrSetting, "MPP : %s, %d, %s, %d",
-               mName.string(),
+               mName.c_str(),
                mFormatRestrictions.back().nodeType,
-               getFormatStr(mFormatRestrictions.back().format).string(),
+               getFormatStr(mFormatRestrictions.back().format).c_str(),
                mFormatRestrictions.back().reserved);
 }
 
@@ -2921,7 +2921,7 @@ void ExynosMPP::addSizeRestrictions(restriction_size srcSize, restriction_size d
     mDstSizeRestrictions[format] = dstSize;
 
     HDEBUGLOGD(eDebugAttrSetting, "MPP : %s: Src: %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d",
-               mName.string(),
+               mName.c_str(),
                srcSize.maxDownScale,
                srcSize.maxUpScale,
                srcSize.maxFullWidth,
@@ -2939,7 +2939,7 @@ void ExynosMPP::addSizeRestrictions(restriction_size srcSize, restriction_size d
                srcSize.cropWidthAlign,
                srcSize.cropHeightAlign);
     HDEBUGLOGD(eDebugAttrSetting, "MPP : %s: Dst: %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d",
-               mName.string(),
+               mName.c_str(),
                dstSize.maxDownScale,
                dstSize.maxUpScale,
                dstSize.maxFullWidth,
@@ -2962,12 +2962,12 @@ void ExynosMPP::printMppsAttr() {
     restriction_classification format;
     format = RESTRICTION_RGB;
 
-    ALOGD("%s restriction info start --------", mName.string());
+    ALOGD("%s restriction info start --------", mName.c_str());
 
     ALOGD("1. support format");
     for (auto r : mFormatRestrictions) {
         ALOGD("node type: %d, format: %s, reserved: %d",
-              r.nodeType, getFormatStr(r.format).string(), r.reserved);
+              r.nodeType, getFormatStr(r.format).c_str(), r.reserved);
     }
 
     ALOGD("2. size restriction");
@@ -3029,7 +3029,7 @@ void ExynosMPP::printMppsAttr() {
               dstSize.cropHeightAlign);
     }
 
-    ALOGD("%s restriction info end --------", mName.string());
+    ALOGD("%s restriction info end --------", mName.c_str());
 }
 
 void ExynosMPP::updatePPCTable(ppc_table &map) {
