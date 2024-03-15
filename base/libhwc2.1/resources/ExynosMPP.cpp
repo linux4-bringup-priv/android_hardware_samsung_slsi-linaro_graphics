@@ -1690,7 +1690,7 @@ int32_t ExynosMPP::doPostProcessing(struct exynos_image &src, struct exynos_imag
     ATRACE_CALL();
     MPP_LOGD(eDebugMPP, "total assigned sources (%zu)++++++++", mAssignedSources.size());
 
-    auto save_frame_info = [=]() {
+    auto save_frame_info = [=, this]() {
         /* Save current frame information for next frame*/
         mPrevAssignedDisplayType = mAssignedDisplayInfo.displayIdentifier.type;
         mPrevFrameInfo.srcNum = (uint32_t)mAssignedSources.size();

@@ -92,7 +92,7 @@ int32_t ExynosDisplayFbInterface::setVsyncEnabled(uint32_t enabled) {
 
 int32_t ExynosDisplayFbInterface::getDisplayConfigs(uint32_t *outNumConfigs,
                                                     hwc2_config_t *outConfigs, std::map<uint32_t, displayConfigs_t> &displayConfigs) {
-    auto use_legacy = [=](std::map<uint32_t, displayConfigs_t> &displayConfigs) {
+    auto use_legacy = [=, this](std::map<uint32_t, displayConfigs_t> &displayConfigs) {
         struct fb_var_screeninfo info;
         if (ioctl(mDisplayFd, FBIOGET_VSCREENINFO, &info) != -1) {
             displayConfigs.clear();
