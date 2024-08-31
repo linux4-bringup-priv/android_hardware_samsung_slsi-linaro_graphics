@@ -22,20 +22,17 @@
 #include "ExynosHWCHelper.h"
 
 #define VSYNC_DEV_PREFIX    "/sys/devices/platform/"
-#define DECON_F_VSYNC_NODE  "16100000.decon_0/vsync"
+#define DECON_F_VSYNC_NODE  "14940000.decon_0/vsync"
 #define DECON_F_FB_NODE     "/dev/graphics/fb0"
-#define DECON_S_VSYNC_NODE  "16101000.decon_1/vsync"
-#define DECON_S_FB_NODE     "/dev/graphics/fb1"
 #define DECON_T_VSYNC_NODE  "16102000.decon_2/vsync"
 #define DECON_T_FB_NODE     "/dev/graphics/fb2"
-#define PSR_DEV_NAME        "16100000.decon_0/psr_info"
-#define PSR_DEV_NAME_S      "16101000.decon_1/psr_info"
+#define PSR_DEV_NAME        "14900000.decon_0/psr_info"
 
 #define DP_LINK_NAME	"120b0000.displayport"
 #define DP_UEVENT_NAME	"change@/devices/platform/%s/extcon/extcon0"
 #define DP_CABLE_STATE_NAME "/sys/devices/platform/%s/extcon/extcon0/cable.%d/state"
 
-#define HIBER_EXIT_NODE_NAME    "/sys/devices/platform/16100000.decon_0/hiber_exit"
+#define HIBER_EXIT_NODE_NAME    "/sys/devices/platform/14940000.decon_0/hiber_exit"
 
 #define IDMA(x) static_cast<decon_idma_type>(x)
 
