@@ -32,6 +32,9 @@
 #define DP_UEVENT_NAME	"change@/devices/platform/%s/extcon/extcon0"
 #define DP_CABLE_STATE_NAME "/sys/devices/platform/%s/extcon/extcon0/cable.%d/state"
 
+#define BRIGHTNESS_NODE_BASE "/sys/class/backlight/panel/brightness"
+#define MAX_BRIGHTNESS_NODE_BASE "/sys/class/backlight/panel/max_brightness"
+
 #define HIBER_EXIT_NODE_NAME    "/sys/devices/platform/14940000.decon_0/hiber_exit"
 
 #define IDMA(x) static_cast<decon_idma_type>(x)
