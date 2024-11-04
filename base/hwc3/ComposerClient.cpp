@@ -435,6 +435,13 @@ ndk::ScopedAStatus ComposerClient::setRefreshRateChangedCallbackDebugEnabled(int
     return ndk::ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
 
+ndk::ScopedAStatus ComposerClient::startHdcpNegotiation(int64_t display,
+                                                        const drm::HdcpLevels& /*levels*/) {
+    DEBUG_DISPLAY_FUNC(display);
+    LOG(ERROR) << "not implemented";
+    return ndk::ScopedAStatus::fromStatus(EX_UNSUPPORTED_OPERATION);
+}
+
 void ComposerClient::HalEventCallback::onRefreshRateChangedDebug(
         const RefreshRateChangedDebugData&) {
     // TODO(b/267825022) Add implementation for the HAL
