@@ -89,6 +89,13 @@ ndk::ScopedAStatus ComposerClient::notifyExpectedPresent(int64_t, const ClockMon
     return TO_BINDER_STATUS(HWC2_ERROR_UNSUPPORTED);
 }
 
+ndk::ScopedAStatus ComposerClient::getMaxLayerPictureProfiles(int64_t display,
+                                                              int32_t* outMaxProfiles) {
+    DEBUG_DISPLAY_FUNC(display);
+    auto err = mHal->getMaxLayerPictureProfiles(display, outMaxProfiles);
+    return TO_BINDER_STATUS(err);
+}
+
 ndk::ScopedAStatus ComposerClient::destroyLayer(int64_t display, int64_t layer) {
     DEBUG_DISPLAY_FUNC(display);
     auto err = mHal->destroyLayer(display, layer);

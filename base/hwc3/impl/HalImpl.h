@@ -158,6 +158,7 @@ class HalImpl : public IComposerHal {
     EventCallback* getEventCallback() { return mEventCallback; }
     int32_t setRefreshRateChangedCallbackDebugEnabled(int64_t /* display */,
                                                       bool /* enabled */) override;
+    int32_t getMaxLayerPictureProfiles(int64_t display, int32_t* outMaxProfiles) override;
 
 private:
     void initCaps();

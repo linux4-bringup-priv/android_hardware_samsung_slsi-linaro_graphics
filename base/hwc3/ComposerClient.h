@@ -138,6 +138,8 @@ public:
     ndk::ScopedAStatus notifyExpectedPresent(int64_t display,
                                              const ClockMonotonicTimestamp& expectedPresentTime,
                                              int32_t frameIntervalNs) override;
+    ndk::ScopedAStatus getMaxLayerPictureProfiles(int64_t display,
+                                                  int32_t* outMaxProfiles) override;
 
 protected:
     ::ndk::SpAIBinder createBinder() override;
