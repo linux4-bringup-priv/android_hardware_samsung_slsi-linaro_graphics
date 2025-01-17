@@ -1,0 +1,60 @@
+
+cc_library {
+    name: "ionps",
+    proprietary: true,
+
+    shared_libs: [
+        "libc",
+        "libcutils",
+        "liblog",
+        "libion_exynos",
+    ],
+
+    srcs: [
+        "ionps.cpp",
+    ],
+}
+
+soong_config_module_type {
+    name: "memtrack_cc_library_shared",
+    module_type: "cc_library_shared",
+    config_namespace: "ANDROID",
+    value_variables: ["target_board_platform"],
+    properties: [
+        "name",
+    ],
+}
+
+memtrack_cc_library_shared {
+    name: "memtrack.target_board_platform",
+    relative_install_path: "hw",
+    proprietary: true,
+    compile_multilib: "both",
+
+    shared_libs: [
+        "liblog",
+        "libion_exynos",
+    ],
+    header_libs: [
+        "libcutils_headers",
+        "libsystem_headers",
+        "libhardware_headers",
+    ],
+
+    srcs: [
+        "memtrack_exynos.cpp",
+        "mali.cpp",
+        "ion.cpp",
+        "dmabuf.cpp",
+        "sgpu.cpp",
+    ],
+
+    soong_config_variables: {
+        target_board_platform: {
+            name: "memtrack.%s",
+            conditions_default: {
+                name: "memtrack.target_board_platform",
+            },
+        },
+    },
+}
