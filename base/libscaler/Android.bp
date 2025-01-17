@@ -9,6 +9,9 @@ cc_library_shared {
     }) + select(soong_config_variable("libexynosscaler", "SCALER_USE_PREMUL_FMT"), {
         "true": ["-DSCALER_USE_PREMUL_FMT"],
         default: [],
+    }) + select(soong_config_variable("libexynosscaler", "SCALER_USE_M2M1SHOT"), {
+        "true": ["-DSCALER_USE_M2M1SHOT"],
+        default: [],
     }),
     shared_libs: [
         "liblog",
@@ -24,11 +27,26 @@ cc_library_shared {
         "libexynos_headers",
     ],
 
-    export_include_dirs: ["include"],
+    local_include_dirs: select(soong_config_variable("libexynosscaler", "USE_LEGACY"), {
+        "true": ["legacy/include"],
+        default: ["include"],
+    }),
+ 
+    export_include_dirs: select(soong_config_variable("libexynosscaler", "USE_LEGACY"), {
+        "true": ["legacy/include"],
+        default: ["include"],
+    }),
 
-    srcs: [
-        "libscaler.cpp",
-    ],
+    srcs: select(soong_config_variable("libexynosscaler", "USE_LEGACY"), {
+        "true": [
+            "legacy/libscaler.cpp",
+            "legacy/libscaler-v4l2.cpp",
+            "legacy/libscalerblend-v4l2.cpp",
+            "legacy/libscaler-m2m1shot.cpp",
+            "legacy/libscaler-swscaler.cpp",
+        ],
+        default: ["libscaler.cpp"],
+    }),
 
     proprietary: true,
 }
