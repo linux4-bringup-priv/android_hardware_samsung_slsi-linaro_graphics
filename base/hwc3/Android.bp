@@ -1,0 +1,139 @@
+// Copyright (C) 2021 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+
+cc_binary {
+    name: "android.hardware.composer.hwc3-service.slsi",
+    init_rc: ["hwc3-slsi.rc"],
+    vintf_fragments: ["hwc3-default.xml"],
+    relative_install_path: "hw",
+    proprietary: true,
+
+    cflags: [
+        "-DLOG_TAG=\"hwc-3\"",
+        "-Wthread-safety",
+    ] + select(soong_config_variable("exynos_hwc", "target_soc_base"), {
+        any @ flag_val: [ "-DSOC_VERSION=" + flag_val ],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "uses_hwc_services"), {
+        "true": [ "-DHWC_SERVICES" ],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USES_ARCH_ARM64"), {
+        "true": ["-DUSES_ARCH_ARM64"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USES_DOZEMODE"), {
+        "true": ["-DUSES_DOZEMODE"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USES_HWC_CPU_PERF_MODE"), {
+        "true": ["-DUSES_HWC_CPU_PERF_MODE"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USES_DUAL_DISPLAY"), {
+        "true": ["-DUSES_DUAL_DISPLAY"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USE_HDR_INTERFACE"), {
+        "true": ["-DUSE_HDR_INTERFACE"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USE_DQE_INTERFACE"), {
+        "true": ["-DUSE_DQE_INTERFACE"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USE_DISPLAY_COLOR_INTERFACE"), {
+        "true": ["-DUSE_DISPLAY_COLOR_INTERFACE"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "ENABLE_DYNAMIC_RECOMP"), {
+        "true": ["-DENABLE_DYNAMIC_RECOMP"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USE_NOT_RESERVED_FIELD"), {
+        "true": ["-DUSE_NOT_RESERVED_FIELD"],
+        default: [],
+    }),
+
+    shared_libs: [
+        "android.hardware.graphics.allocator@2.0",
+        "android.hardware.graphics.composer3-V4-ndk",
+        "android.hardware.graphics.composer@2.1-resources",
+        "android.hardware.graphics.composer@2.2-resources",
+        "android.hardware.graphics.composer@2.4",
+        "libbase",
+        "libbinder",
+        "libbinder_ndk",
+        "libcutils",
+        "libexynosdisplay",
+        "libfmq",
+        "libhardware",
+        "libhardware_legacy",
+        "liblog",
+        "libsync",
+        "libutils",
+    ] + select(soong_config_variable("exynos_hwc", "uses_hwc_services"), {
+        "true": [ "libExynosHWCService" ],
+        default: [],
+    }),
+
+    static_libs: [
+        "libaidlcommonsupport",
+    ],
+
+    header_libs: [
+        "android.hardware.graphics.composer3-command-buffer",
+        "libgralloc4_headers_exynos",
+        "libhdrinterface_header",
+    ] + select(soong_config_variable("exynos_hwc", "uses_hwc_services"), {
+        "true": [ "libbinder_headers" ],
+        default: [],
+    }),
+
+    include_dirs: [
+        "hardware/samsung_slsi-linaro/exynos/include",
+        "hardware/samsung_slsi-linaro/graphics/base/include",
+        "hardware/samsung_slsi-linaro/graphics/base/libdrmresource",
+        "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1",
+        "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/device",
+        "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/utils",
+        "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/display",
+        "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/resources",
+        "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/primarydisplay",
+        "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/externaldisplay",
+        "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/virtualdisplay",
+        "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/driver_header",
+        "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/libhwcService",
+    ] + select(soong_config_variable("exynos_hwc", "target_soc_base"), {
+        any @ flag_val: [
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/" + flag_val,
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/" + flag_val + "/device",
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/" + flag_val + "/display",
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/" + flag_val + "/resources",
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/" + flag_val + "/primarydisplay",
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/" + flag_val + "/externaldisplay",
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/" + flag_val + "/virtualdisplay",
+        ],
+        default: [
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/essi",
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/essi/device",
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/essi/display",
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/essi/resources",
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/essi/primarydisplay",
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/essi/externaldisplay",
+            "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/platform/essi/virtualdisplay",
+        ],
+    }),
+
+    srcs: [
+        "Composer.cpp",
+        "ComposerClient.cpp",
+        "ComposerCommandEngine.cpp",
+        "impl/HalImpl.cpp",
+        "impl/ResourceManager.cpp",
+        "service.cpp",
+    ],
+}

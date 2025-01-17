@@ -1,0 +1,284 @@
+
+cc_defaults {
+    name: "libhwc2_defaults",
+    proprietary: true,
+    cflags: [
+        "-DHLOG_CODE=0",
+        "-Wno-unused-parameter",
+        "-Wno-unused-variable",
+        "-Wthread-safety",
+        "-DBUILD_VARIANT_USER",
+    ] + select(soong_config_variable("exynos_hwc", "HWC_SUPPORT_COLOR_TRANSFORM"), {
+        "true": ["-DHWC_SUPPORT_COLOR_TRANSFORM"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "HWC_SUPPORT_RENDER_INTENT"), {
+        "true": ["-DHWC_SUPPORT_RENDER_INTENT"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USES_ARCH_ARM64"), {
+        "true": ["-DUSES_ARCH_ARM64"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USES_SAJC_FEATURE"), {
+        "true": ["-DUSES_SAJC_FEATURE"],
+        default: [],
+    }) + select(soong_config_variable("arm_gralloc", "gralloc_version"), {
+        "one": ["-DGRALLOC_VERSION1"],
+        "three": [
+            "-DGRALLOC_VERSION1",
+            "-DGRALLOC_VERSION3",
+        ],
+        "four": [
+            "-DGRALLOC_VERSION1",
+            "-DGRALLOC_VERSION3",
+        ],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "GRALLOC_VERSION1"), {
+        "true": ["-DGRALLOC_VERSION1"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "GRALLOC_VERSION3"), {
+        "true": ["-DGRALLOC_VERSION3"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USES_HDR_GLES_CONVERSION"), {
+        "true": ["-DUSES_HDR_GLES_CONVERSION"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USES_DOZEMODE"), {
+        "true": ["-DUSES_DOZEMODE"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USES_HWC_CPU_PERF_MODE"), {
+        "true": ["-DUSES_HWC_CPU_PERF_MODE"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USES_DUAL_DISPLAY"), {
+        "true": ["-DUSES_DUAL_DISPLAY"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USE_HDR_INTERFACE"), {
+        "true": ["-DUSE_HDR_INTERFACE"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USE_LIBHDR_PLUGIN"), {
+        "true": ["-DUSE_LIBHDR_PLUGIN"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USE_LIBHDR10P_META_PLUGIN"), {
+        "true": ["-DUSE_LIBHDR10P_META_PLUGIN"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USE_DQE_INTERFACE"), {
+        "true": ["-DUSE_DQE_INTERFACE"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USE_DISPLAY_COLOR_INTERFACE"), {
+        "true": ["-DUSE_DISPLAY_COLOR_INTERFACE"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "HWC_DISABLE_WIN_UPDATE"), {
+        "true": ["-DHWC_DISABLE_WIN_UPDATE"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "ENABLE_DYNAMIC_RECOMP"), {
+        "true": ["-DENABLE_DYNAMIC_RECOMP"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "ENABLE_FORCE_GPU"), {
+        "true": ["-DENABLE_FORCE_GPU"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "USE_NOT_RESERVED_FIELD"), {
+        "true": ["-DUSE_NOT_RESERVED_FIELD"],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "MINIMUM_DISPLAY_BRIGHTNESS"), {
+        any @ flag_val: [ "-DMINIMUM_DISPLAY_BRIGHTNESS=" + flag_val ],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "uses_hwc_services"), {
+        "true": [ "-DUSES_HWC_SERVICES" ],
+        default: [],
+    }),
+
+    static_libs: [
+        "libVendorVideoApi",
+    ],
+
+    shared_libs: [
+        "liblog",
+        "libcutils",
+        "libutils",
+        "libacryl",
+        "libui",
+        "libion",
+    ] + select(soong_config_variable("exynos_hwc", "libhdr_plugin"), {
+        any @ flag_val: [ flag_val ],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "libhdr10p_meta_plugin"), {
+        any @ flag_val: [ flag_val ],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "uses_dqe_interface"), {
+        "true": [ "libdqeInterface" ],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "uses_display_color_interface"), {
+        "true": [ "libdisplaycolor_default" ],
+        default: [],
+    }),
+
+    header_libs: [
+        "libhdrInterface_headers",
+        "libhdr10p_meta_interface_header",
+        "device_kernel_headers",
+        "libhardware_legacy_headers",
+        "libbinder_headers",
+        "libexynos_headers",
+    ] + select(soong_config_variable("exynos_hwc", "uses_dqe_interface"), {
+        "true": [ "libdqeInterface_headers" ],
+        default: [],
+    }) + select(soong_config_variable("exynos_hwc", "uses_display_color_interface"), {
+        "true": [ "libdisplaycolor_interface" ],
+        default: [],
+    }),
+
+    include_dirs: [
+        "hardware/samsung_slsi-linaro/graphics/base/libdrmresource",
+    ],
+
+    local_include_dirs: [
+        "device",
+        "utils",
+        "display",
+        "resources",
+        "primarydisplay",
+        "externaldisplay",
+        "virtualdisplay",
+        "driver_header",
+        "libhwcService",
+    ] + select(soong_config_variable("exynos_hwc", "target_soc_base"), {
+        any @ flag_val: [
+            "platform/" + flag_val + "",
+            "platform/" + flag_val + "/device",
+            "platform/" + flag_val + "/display",
+            "platform/" + flag_val + "/resources",
+            "platform/" + flag_val + "/primarydisplay",
+            "platform/" + flag_val + "/externaldisplay",
+            "platform/" + flag_val + "/virtualdisplay",
+        ],
+        default: [
+            "platform/essi",
+            "platform/essi/device",
+            "platform/essi/display",
+            "platform/essi/resources",
+            "platform/essi/primarydisplay",
+            "platform/essi/externaldisplay",
+            "platform/essi/virtualdisplay",
+        ],
+    }),
+ 
+}
+
+cc_library_shared {
+    name: "libexynosdisplay",
+    defaults: ["libhwc2_defaults"],
+
+    cflags: [
+        "-DLOG_TAG=\"hwc-display\"",
+    ],
+
+    export_shared_lib_headers: [
+        "libdrm",
+        "libacryl",
+    ],
+
+    shared_libs: [
+        "libhardware",
+        "libhardware_legacy",
+        "libsync",
+        "libion_exynos",
+        "libexynosgraphicbuffer",
+        "libdrmresource",
+        "libdrm",
+        "libprocessgroup",
+    ],
+
+    srcs: [
+        "device/ExynosDevice.cpp",
+        "device/ExynosDeviceDrmInterface.cpp",
+        "device/ExynosDeviceFbInterface.cpp",
+        "device/ExynosDeviceInterface.cpp",
+        "device/ExynosResourceManager.cpp",
+        "display/ExynosDisplay.cpp",
+        "display/ExynosDisplayDrmInterface.cpp",
+        "display/ExynosDrmFramebufferManager.cpp",
+        "display/ExynosDisplayFbInterface.cpp",
+        "display/ExynosDisplayInterface.cpp",
+        "display/ExynosLayer.cpp",
+        "primarydisplay/ExynosPrimaryDisplay.cpp",
+        "primarydisplay/ExynosPrimaryDisplayFbInterface.cpp",
+        "externaldisplay/ExynosExternalDisplay.cpp",
+        "externaldisplay/ExynosExternalDisplayFbInterface.cpp",
+        "virtualdisplay/ExynosVirtualDisplay.cpp",
+        "virtualdisplay/ExynosVirtualDisplayFbInterface.cpp",
+        "resources/ExynosMPP.cpp",
+        "utils/ExynosFenceTracer.cpp",
+        "utils/ExynosHWCDebug.cpp",
+        "utils/ExynosHWCFormat.cpp",
+        "utils/ExynosHWCHelper.cpp",
+        "utils/OneShotTimer.cpp",
+    ] + select(soong_config_variable("exynos_hwc", "target_soc_base"), {
+        any @ flag_val: [
+            "platform/" + flag_val + "/**/*.cpp",
+        ],
+        default: [ /* essi */
+            "platform/essi/**/*.cpp",
+        ],
+    }),
+}
+
+cc_library_shared {
+    name: "libExynosHWCService",
+    defaults: ["libhwc2_defaults"],
+
+    cflags: [
+        "-DLOG_TAG=\"hwc-service\"",
+    ],
+
+    shared_libs: [
+        "libbinder",
+        "libexynosdisplay",
+    ],
+
+    include_dirs: [
+        "hardware/samsung_slsi-linaro/graphics/base/libhwc2.1/libhwcService",
+    ],
+
+    srcs: [
+        "libhwcService/IExynosHWC.cpp",
+        "libhwcService/ExynosHWCService.cpp",
+    ] ,
+}
+
+soong_config_module_type {
+    name: "hwcomposer_cc_library_shared",
+    module_type: "cc_library_shared",
+    config_namespace: "ANDROID",
+    value_variables: ["target_board_platform"],
+    properties: [
+        "name",
+    ],
+}
+
+hwcomposer_cc_library_shared {
+    name: "hwcomposer.target_board_platform",
+    defaults: ["libhwc2_defaults"],
+    relative_install_path: "hw",
+
+    cflags: [
+        "-DLOG_TAG=\"hwc-2\"",
+    ],
+
+    shared_libs: [
+        "libexynosdisplay",
+    ] + select(soong_config_variable("exynos_hwc", "uses_hwc_services"), {
+        "true": [ "libExynosHWCService" ],
+        default: [],
+    }),
+
+    srcs: [
+        "ExynosHWC.cpp",
+    ] ,
+
+    soong_config_variables: {
+        target_board_platform: {
+            name: "hwcomposer.%s",
+            conditions_default: {
+                name: "hwcomposer.target_board_platform",
+            },
+        },
+    },
+}
+
