@@ -992,6 +992,22 @@ int32_t ExynosResourceManager::validateLayer(uint32_t index, ExynosDisplay *disp
         (layer->mPreprocessedInfo.displayFrame.bottom > (int32_t)display->mYres))
         return eInvalidDispFrame;
 
+#ifdef HWC_FORCE_CLIENT_VIDEO
+    /*
+     * When the flag HWC_FORCE_CLIENT_VIDEO is enabled, force all YUV (usually video)
+     * layers to CLIENT composition to avoid hardware overlay artifacts.
+     */
+    {
+        if (layer->mLayerBuffer != NULL) {
+            exynos_image __tmp_img;
+            layer->setSrcExynosImage(&__tmp_img);
+            if (__tmp_img.exynosFormat.isYUV()) {
+                return eFroceClientLayer;
+            }
+        }
+    }
+#endif
+
     return NO_ERROR;
 }
 
